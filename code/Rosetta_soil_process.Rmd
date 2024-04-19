@@ -1,0 +1,208 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+```{r}
+library(reticulate)
+library(terra)
+library(dplyr)
+use_python("c:/python310", required = TRUE)
+```
+
+```{r}
+rosetta_pkg <- import('rosetta')
+
+rosetta_functions <- rosetta_pkg$rosetta
+rosetta <- rosetta_functions$rosetta
+SoilData <- rosetta_functions$SoilData
+```
+
+
+```{r}
+# Function to prepare and convert data for Python's SoilData.from_array
+prepare_soil_data_instance <- function(df, vars) {
+  # Ensure all required columns are present
+  if (!all(vars %in% names(df))) {
+    stop("Some of the specified vars are not in the dataframe columns.")
+  }
+
+  # Filter out rows with any NAs in the specified variables
+  df_valid <- df %>% 
+    dplyr::select(dplyr::all_of(vars)) %>% 
+    na.omit()
+
+  # Convert the DataFrame to a matrix (ensures compact 2D array structure)
+  df_valid_matrix <- as.matrix(df_valid)
+
+  # Convert each row of the matrix to a numeric list
+  df_valid_py <- lapply(seq_len(nrow(df_valid_matrix)), function(i) {
+    as.numeric(df_valid_matrix[i, ])
+  })
+
+  # Use reticulate to convert the list of numeric vectors to a Python-compatible list
+  df_valid_py <- r_to_py(df_valid_py)
+
+  # Print the first few entries to verify the structure and data types
+  if (length(df_valid_py) > 0) {
+    cat("First entry in Python format:\n")
+    print(df_valid_py[[1]])
+  }
+
+  return(df_valid_py)
+}
+
+```
+
+```{r}
+process_data_with_rosetta <- function(df, vars, v=3, conf=NULL, include_sd=FALSE) {
+
+  # Filter rows without any NAs in the specified variables and store the indices
+  valid_indices <- which(complete.cases(df[, vars]))
+  df_valid <- df[valid_indices, vars, drop = FALSE]
+  
+  # Filter out rows with any NAs in the specified variables
+  df_valid <- df %>% 
+    dplyr::select(dplyr::all_of(vars)) %>% 
+    na.omit()
+
+  # Convert the DataFrame to a matrix (ensures compact 2D array structure)
+  df_valid_matrix <- as.matrix(df_valid)
+
+  # Convert each row of the matrix to a numeric list
+  df_valid_list_py <- lapply(seq_len(nrow(df_valid_matrix)), function(i) {
+    as.numeric(df_valid_matrix[i, ])
+  })
+  # Function to extract a sublist given a list, start index, and chunk size
+  extract_sublist <- function(list, start_index, chunk_size) {
+    end_index <- min(start_index + chunk_size - 1, length(list))
+    return(list[start_index:end_index])
+  }
+  
+  # Initialize variables
+  start_index <- 1
+  chunk_size <- 20000
+  results_list <- list()
+  i <- 1  # To keep track of the index for results_list
+  
+  while (start_index <= length(df_valid_list_py)) {
+    # Extract the sublist for the current chunk
+    df_valid_py <- extract_sublist(df_valid_list_py, start_index, chunk_size)
+    
+    # Create SoilData instance and call the rosetta function
+    soil_data_instance <- SoilData$from_array(df_valid_py)
+    
+    # Process with rosetta (assuming it can handle the entire chunk)
+    results <- rosetta(v, soil_data_instance)
+  
+    # Extract outputs from the results
+    mean <- py_to_r(results[[1]])
+    stdev <- py_to_r(results[[2]])
+    codes <- py_to_r(results[[3]])
+    
+    # Convert the mean to a DataFrame and set column names
+    vg_params <- as.data.frame(matrix(mean, ncol = 5, byrow = TRUE))
+    colnames(vg_params) <- c("theta_r", "theta_s", "alpha", "npar", "ksat")
+    
+    # Add model codes and version to the DataFrame
+    vg_params[".rosetta.model"] <- factor(codes, levels = -1:5)
+    vg_params[".rosetta.version"] <- v
+  
+    # Append results to the list
+    results_list[[i]] <- vg_params
+    
+    # Move to the next chunk
+    start_index <- start_index + chunk_size
+    i <- i + 1  # Increment the results list index
+  }
+  vg_params <- bind_rows(results_list)
+  # Initialize an empty DataFrame with the same structure to store all results
+  all_results <- data.frame(replicate(ncol(vg_params), vector("numeric", length = nrow(df))))
+  all_results[,] <- NA  # Set all values to NA initially
+
+  # Map valid results back to their original positions
+  all_results[valid_indices,] <- vg_params
+
+  # Include standard deviations if requested
+  if (include_sd) {
+    vg_sd <- as.data.frame(matrix(stdev, ncol = 5, byrow = TRUE))
+    colnames(vg_sd) <- paste0("sd_", colnames(vg_params))
+    
+    # Initialize the standard deviations DataFrame
+    all_sd <- all_results
+    all_sd[,] <- NA  # Set all to NA
+    
+    # Map valid standard deviations back to their original positions
+    all_sd[valid_indices,] <- vg_sd
+    
+    return(list(results = all_results, sd = all_sd))
+  } else {
+    return(all_results)
+  }
+}
+
+
+```
+
+```{r}
+# Load raster layers
+db_raster <- rast("C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/db_0_Snohomish.tif")
+sand_raster <- terra::crop(rast("C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/sand_0_Snohomish.tif"), terra::ext(db_raster))
+silt_raster <- terra::crop(rast("C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/silt_0_Snohomish.tif"), terra::ext(db_raster))
+clay_raster <- terra::crop(rast("C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/clay_0_Snohomish.tif"), terra::ext(db_raster))
+
+
+```
+
+```{r}
+# Stack the rasters
+soil_stack <- c(sand_raster, silt_raster, clay_raster)
+
+# Function to normalize the components so that they sum to 100
+normalize_func <- function(x) {
+  total <- x[1] + x[2] + x[3]
+  # Avoid division by zero by replacing 0 with NA or a small number
+  total[total == 0] <- NA
+  c(x[1] / total * 100, x[2] / total * 100, x[3] / total * 100)
+}
+
+# Apply the normalization function
+normalized_soil_stack <- app(soil_stack, normalize_func)
+soil_stack <- c(normalized_soil_stack, db_raster/100)
+# Convert raster stack to a matrix where each row is a pixel and columns are properties
+df <- data.frame(values(soil_stack))
+names(df) <- c("sand","silt","clay","bulk_density")
+```
+
+```{r}
+variables = c("sand","silt","clay","bulk_density")
+results <- process_data_with_rosetta(df, vars=variables, v=3)
+results <- all_results
+results <- as.matrix(sapply(results, as.numeric))
+# Convert results back to a raster
+result_raster <- rast(nrows=nrow(soil_stack), 
+                     ncols=ncol(soil_stack), 
+                     nlyrs=ncol(results), 
+                     extent=ext(soil_stack), 
+                     crs=crs(soil_stack),
+                     vals=NA) 
+values(result_raster) <- matrix(results, ncol = ncol(results), byrow = TRUE)
+```
+
+
+```{r}
+# Example R DataFrame
+data_df <- data.frame(
+  sand = c(30, 20, 55),
+  silt = c(30, 60, 25),
+  clay = c(40, 20, 20),
+  bulk_density = c(1.5, 2, 1.1)  # Including an NA for illustration
+)
+
+# Pass to Python function
+results <- process_data_with_rosetta(data_df, vars=c("sand", "silt", "clay", "bulk_density"), v=3)
+```
+
+
+

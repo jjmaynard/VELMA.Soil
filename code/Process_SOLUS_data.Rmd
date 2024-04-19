@@ -1,0 +1,97 @@
+---
+title: "SOLUS Data Processing"
+output: html_notebook
+---
+
+
+```{r}
+library(sf)
+library(terra)
+
+```
+
+```{r}
+# Load the shapefile
+Snohomish_path <- "C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/Watershed_vector-delineations/Snohomish_del.shp"
+
+Snohomish <- st_read(Snohomish_path)
+clay_0 <- rast('https://storage.googleapis.com/solus100notpub/claytotal_0_cm_p.tif')
+# Transform CRS of shapefile to match COG if necessary
+if (st_crs(Snohomish) != crs(clay_0)) {
+  Snohomish <- st_transform(Snohomish, crs(clay_0))
+}
+
+# Review SOLUS layers
+solus_layers <- read.csv("C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/Final_Layer_Table_20231215.csv")
+```
+
+
+```{r}
+# Function to load rasters from URLs
+load_rasters <- function(urls) {
+  sapply(urls, rast, simplify = FALSE)  # Using sapply to return a list of raster objects
+}
+
+# Define URLs for different soil properties at different depths
+depths <- c(0, 15, 30, 60, 100, 150)
+base_url <- "https://storage.googleapis.com/solus100notpub"
+
+properties <- c("claytotal", "sandtotal", "silttotal", "soc")
+names_list <- c("clay", "sand", "silt", "soc")  # Names for list indexing
+
+# Create a list of URLs for each property at each depth
+urls_list <- lapply(properties, function(prop) {
+  setNames(lapply(depths, function(depth) {
+    sprintf("%s/%s_%s_cm_p.tif", base_url, prop, depth)
+  }), depths)
+})
+
+# Load rasters for each property and depth
+rasters_list <- setNames(lapply(urls_list, load_rasters), names_list)
+
+# Function to mask, trim, and write raster to disk
+process_raster <- function(raster, shapefile, output_path) {
+  masked_raster <- mask(raster, shapefile)
+  trimmed_raster <- trim(masked_raster)
+  writeRaster(trimmed_raster, output_path, overwrite=TRUE)
+}
+
+# Load the shapefile
+Snohomish <- vect("path_to_Snohomish_shapefile.shp")
+
+# Process each raster file
+output_directory <- "C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data"
+for (prop in names(rasters_list)) {
+  for (depth in names(rasters_list[[prop]])) {
+    raster <- rasters_list[[prop]][[depth]]
+    output_path <- file.path(output_directory, sprintf("%s_%s_Snohomish.tif", prop, depth))
+    process_raster(raster, Snohomish, output_path)
+  }
+}
+
+# Additionally for bedrock, if needed
+bedrock_url <- sprintf("%s/anylithicdpt_cm_p.tif", base_url)
+bedrock <- rast(bedrock_url)
+bedrock_output_path <- file.path(output_directory, "bedrock_Snohomish.tif")
+process_raster(bedrock, Snohomish, bedrock_output_path)
+
+```
+
+```{r}
+
+
+```
+
+```{r}
+# Crop the COG using the shapefile boundary
+clay_0_Snohomish <- mask(clay_0, Snohomish)
+clay_0_Snohomish <- trim(clay_0_Snohomish, filename="C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/clay_0_Snohomish.tif")
+
+bedrock_Snohomish <- mask(bedrock, Snohomish)
+bedrock_Snohomish <- trim(bedrock_Snohomish, filename="C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/bedrock_Snohomish.tif")
+
+```
+```{r}
+
+```
+

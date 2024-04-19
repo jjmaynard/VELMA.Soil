@@ -1,0 +1,513 @@
+filename,property,depth,filetype,scalar,description,units
+anylithicdpt_cm_2D_h.tif,anylithicdpt,NA,95% high prediction interval,1,Depth to bedrock (lithic or paralithic),cm
+anylithicdpt_cm_2D_l.tif,anylithicdpt,NA,95% low prediction interval,1,Depth to bedrock (lithic or paralithic),cm
+anylithicdpt_cm_2D_p.tif,anylithicdpt,NA,prediction,1,Depth to bedrock (lithic or paralithic),cm
+anylithicdpt_cm_2D_rpi.tif,anylithicdpt,NA,relative prediction interval,1000,Depth to bedrock (lithic or paralithic),cm
+caco3_0_cm_h.tif,caco3,0_cm,95% high prediction interval,1,Calcium carbonate,percent mass
+caco3_0_cm_l.tif,caco3,0_cm,95% low prediction interval,1,Calcium carbonate,percent mass
+caco3_0_cm_p.tif,caco3,0_cm,prediction,1,Calcium carbonate,percent mass
+caco3_0_cm_rpi.tif,caco3,0_cm,relative prediction interval,100,Calcium carbonate,percent mass
+caco3_100_cm_h.tif,caco3,100_cm,95% high prediction interval,1,Calcium carbonate,percent mass
+caco3_100_cm_l.tif,caco3,100_cm,95% low prediction interval,1,Calcium carbonate,percent mass
+caco3_100_cm_p.tif,caco3,100_cm,prediction,1,Calcium carbonate,percent mass
+caco3_100_cm_rpi.tif,caco3,100_cm,relative prediction interval,100,Calcium carbonate,percent mass
+caco3_15_cm_h.tif,caco3,15_cm,95% high prediction interval,1,Calcium carbonate,percent mass
+caco3_15_cm_l.tif,caco3,15_cm,95% low prediction interval,1,Calcium carbonate,percent mass
+caco3_15_cm_p.tif,caco3,15_cm,prediction,1,Calcium carbonate,percent mass
+caco3_15_cm_rpi.tif,caco3,15_cm,relative prediction interval,100,Calcium carbonate,percent mass
+caco3_150_cm_h.tif,caco3,150_cm,95% high prediction interval,1,Calcium carbonate,percent mass
+caco3_150_cm_l.tif,caco3,150_cm,95% low prediction interval,1,Calcium carbonate,percent mass
+caco3_150_cm_p.tif,caco3,150_cm,prediction,1,Calcium carbonate,percent mass
+caco3_150_cm_rpi.tif,caco3,150_cm,relative prediction interval,100,Calcium carbonate,percent mass
+caco3_30_cm_h.tif,caco3,30_cm,95% high prediction interval,1,Calcium carbonate,percent mass
+caco3_30_cm_l.tif,caco3,30_cm,95% low prediction interval,1,Calcium carbonate,percent mass
+caco3_30_cm_p.tif,caco3,30_cm,prediction,1,Calcium carbonate,percent mass
+caco3_30_cm_rpi.tif,caco3,30_cm,relative prediction interval,100,Calcium carbonate,percent mass
+caco3_5_cm_h.tif,caco3,5_cm,95% high prediction interval,1,Calcium carbonate,percent mass
+caco3_5_cm_l.tif,caco3,5_cm,95% low prediction interval,1,Calcium carbonate,percent mass
+caco3_5_cm_p.tif,caco3,5_cm,prediction,1,Calcium carbonate,percent mass
+caco3_5_cm_rpi.tif,caco3,5_cm,relative prediction interval,100,Calcium carbonate,percent mass
+caco3_60_cm_h.tif,caco3,60_cm,95% high prediction interval,1,Calcium carbonate,percent mass
+caco3_60_cm_l.tif,caco3,60_cm,95% low prediction interval,1,Calcium carbonate,percent mass
+caco3_60_cm_p.tif,caco3,60_cm,prediction,1,Calcium carbonate,percent mass
+caco3_60_cm_rpi.tif,caco3,60_cm,relative prediction interval,100,Calcium carbonate,percent mass
+cec7_0_cm_h.tif,cec7,0_cm,95% high prediction interval,10,Cation Exchange Capacity (pH 7),meq/100g
+cec7_0_cm_l.tif,cec7,0_cm,95% low prediction interval,10,Cation Exchange Capacity (pH 7),meq/100g
+cec7_0_cm_p.tif,cec7,0_cm,prediction,10,Cation Exchange Capacity (pH 7),meq/100g
+cec7_0_cm_rpi.tif,cec7,0_cm,relative prediction interval,100,Cation Exchange Capacity (pH 7),meq/100g
+cec7_100_cm_h.tif,cec7,100_cm,95% high prediction interval,10,Cation Exchange Capacity (pH 7),meq/100g
+cec7_100_cm_l.tif,cec7,100_cm,95% low prediction interval,10,Cation Exchange Capacity (pH 7),meq/100g
+cec7_100_cm_p.tif,cec7,100_cm,prediction,10,Cation Exchange Capacity (pH 7),meq/100g
+cec7_100_cm_rpi.tif,cec7,100_cm,relative prediction interval,100,Cation Exchange Capacity (pH 7),meq/100g
+cec7_15_cm_h.tif,cec7,15_cm,95% high prediction interval,10,Cation Exchange Capacity (pH 7),meq/100g
+cec7_15_cm_l.tif,cec7,15_cm,95% low prediction interval,10,Cation Exchange Capacity (pH 7),meq/100g
+cec7_15_cm_p.tif,cec7,15_cm,prediction,10,Cation Exchange Capacity (pH 7),meq/100g
+cec7_15_cm_rpi.tif,cec7,15_cm,relative prediction interval,100,Cation Exchange Capacity (pH 7),meq/100g
+cec7_150_cm_h.tif,cec7,150_cm,95% high prediction interval,10,Cation Exchange Capacity (pH 7),meq/100g
+cec7_150_cm_l.tif,cec7,150_cm,95% low prediction interval,10,Cation Exchange Capacity (pH 7),meq/100g
+cec7_150_cm_p.tif,cec7,150_cm,prediction,10,Cation Exchange Capacity (pH 7),meq/100g
+cec7_150_cm_rpi.tif,cec7,150_cm,relative prediction interval,100,Cation Exchange Capacity (pH 7),meq/100g
+cec7_30_cm_h.tif,cec7,30_cm,95% high prediction interval,10,Cation Exchange Capacity (pH 7),meq/100g
+cec7_30_cm_l.tif,cec7,30_cm,95% low prediction interval,10,Cation Exchange Capacity (pH 7),meq/100g
+cec7_30_cm_p.tif,cec7,30_cm,prediction,10,Cation Exchange Capacity (pH 7),meq/100g
+cec7_30_cm_rpi.tif,cec7,30_cm,relative prediction interval,100,Cation Exchange Capacity (pH 7),meq/100g
+cec7_5_cm_h.tif,cec7,5_cm,95% high prediction interval,10,Cation Exchange Capacity (pH 7),meq/100g
+cec7_5_cm_l.tif,cec7,5_cm,95% low prediction interval,10,Cation Exchange Capacity (pH 7),meq/100g
+cec7_5_cm_p.tif,cec7,5_cm,prediction,10,Cation Exchange Capacity (pH 7),meq/100g
+cec7_5_cm_rpi.tif,cec7,5_cm,relative prediction interval,100,Cation Exchange Capacity (pH 7),meq/100g
+cec7_60_cm_h.tif,cec7,60_cm,95% high prediction interval,10,Cation Exchange Capacity (pH 7),meq/100g
+cec7_60_cm_l.tif,cec7,60_cm,95% low prediction interval,10,Cation Exchange Capacity (pH 7),meq/100g
+cec7_60_cm_p.tif,cec7,60_cm,prediction,10,Cation Exchange Capacity (pH 7),meq/100g
+cec7_60_cm_rpi.tif,cec7,60_cm,relative prediction interval,100,Cation Exchange Capacity (pH 7),meq/100g
+claytotal_0_cm_h.tif,claytotal,0_cm,95% high prediction interval,1,Clay content in percent,percent mass
+claytotal_0_cm_l.tif,claytotal,0_cm,95% low prediction interval,1,Clay content in percent,percent mass
+claytotal_0_cm_p.tif,claytotal,0_cm,prediction,1,Clay content in percent,percent mass
+claytotal_0_cm_rpi.tif,claytotal,0_cm,relative prediction interval,100,Clay content in percent,percent mass
+claytotal_100_cm_h.tif,claytotal,100_cm,95% high prediction interval,1,Clay content in percent,percent mass
+claytotal_100_cm_l.tif,claytotal,100_cm,95% low prediction interval,1,Clay content in percent,percent mass
+claytotal_100_cm_p.tif,claytotal,100_cm,prediction,1,Clay content in percent,percent mass
+claytotal_100_cm_rpi.tif,claytotal,100_cm,relative prediction interval,100,Clay content in percent,percent mass
+claytotal_15_cm_h.tif,claytotal,15_cm,95% high prediction interval,1,Clay content in percent,percent mass
+claytotal_15_cm_l.tif,claytotal,15_cm,95% low prediction interval,1,Clay content in percent,percent mass
+claytotal_15_cm_p.tif,claytotal,15_cm,prediction,1,Clay content in percent,percent mass
+claytotal_15_cm_rpi.tif,claytotal,15_cm,relative prediction interval,100,Clay content in percent,percent mass
+claytotal_150_cm_h.tif,claytotal,150_cm,95% high prediction interval,1,Clay content in percent,percent mass
+claytotal_150_cm_l.tif,claytotal,150_cm,95% low prediction interval,1,Clay content in percent,percent mass
+claytotal_150_cm_p.tif,claytotal,150_cm,prediction,1,Clay content in percent,percent mass
+claytotal_150_cm_rpi.tif,claytotal,150_cm,relative prediction interval,100,Clay content in percent,percent mass
+claytotal_30_cm_h.tif,claytotal,30_cm,95% high prediction interval,1,Clay content in percent,percent mass
+claytotal_30_cm_l.tif,claytotal,30_cm,95% low prediction interval,1,Clay content in percent,percent mass
+claytotal_30_cm_p.tif,claytotal,30_cm,prediction,1,Clay content in percent,percent mass
+claytotal_30_cm_rpi.tif,claytotal,30_cm,relative prediction interval,100,Clay content in percent,percent mass
+claytotal_5_cm_h.tif,claytotal,5_cm,95% high prediction interval,1,Clay content in percent,percent mass
+claytotal_5_cm_l.tif,claytotal,5_cm,95% low prediction interval,1,Clay content in percent,percent mass
+claytotal_5_cm_p.tif,claytotal,5_cm,prediction,1,Clay content in percent,percent mass
+claytotal_5_cm_rpi.tif,claytotal,5_cm,relative prediction interval,100,Clay content in percent,percent mass
+claytotal_60_cm_h.tif,claytotal,60_cm,95% high prediction interval,1,Clay content in percent,percent mass
+claytotal_60_cm_l.tif,claytotal,60_cm,95% low prediction interval,1,Clay content in percent,percent mass
+claytotal_60_cm_p.tif,claytotal,60_cm,prediction,1,Clay content in percent,percent mass
+claytotal_60_cm_rpi.tif,claytotal,60_cm,relative prediction interval,100,Clay content in percent,percent mass
+dbovendry_0_cm_h.tif,dbovendry,0_cm,95% high prediction interval,100,Bulk density (oven dry),g cm-3
+dbovendry_0_cm_l.tif,dbovendry,0_cm,95% low prediction interval,100,Bulk density (oven dry),g cm-3
+dbovendry_0_cm_p.tif,dbovendry,0_cm,prediction,100,Bulk density (oven dry),g cm-3
+dbovendry_0_cm_rpi.tif,dbovendry,0_cm,relative prediction interval,100,Bulk density (oven dry),g cm-3
+dbovendry_100_cm_h.tif,dbovendry,100_cm,95% high prediction interval,100,Bulk density (oven dry),g cm-3
+dbovendry_100_cm_l.tif,dbovendry,100_cm,95% low prediction interval,100,Bulk density (oven dry),g cm-3
+dbovendry_100_cm_p.tif,dbovendry,100_cm,prediction,100,Bulk density (oven dry),g cm-3
+dbovendry_100_cm_rpi.tif,dbovendry,100_cm,relative prediction interval,100,Bulk density (oven dry),g cm-3
+dbovendry_15_cm_h.tif,dbovendry,15_cm,95% high prediction interval,100,Bulk density (oven dry),g cm-3
+dbovendry_15_cm_l.tif,dbovendry,15_cm,95% low prediction interval,100,Bulk density (oven dry),g cm-3
+dbovendry_15_cm_p.tif,dbovendry,15_cm,prediction,100,Bulk density (oven dry),g cm-3
+dbovendry_15_cm_rpi.tif,dbovendry,15_cm,relative prediction interval,100,Bulk density (oven dry),g cm-3
+dbovendry_150_cm_h.tif,dbovendry,150_cm,95% high prediction interval,100,Bulk density (oven dry),g cm-3
+dbovendry_150_cm_l.tif,dbovendry,150_cm,95% low prediction interval,100,Bulk density (oven dry),g cm-3
+dbovendry_150_cm_p.tif,dbovendry,150_cm,prediction,100,Bulk density (oven dry),g cm-3
+dbovendry_150_cm_rpi.tif,dbovendry,150_cm,relative prediction interval,100,Bulk density (oven dry),g cm-3
+dbovendry_30_cm_h.tif,dbovendry,30_cm,95% high prediction interval,100,Bulk density (oven dry),g cm-3
+dbovendry_30_cm_l.tif,dbovendry,30_cm,95% low prediction interval,100,Bulk density (oven dry),g cm-3
+dbovendry_30_cm_p.tif,dbovendry,30_cm,prediction,100,Bulk density (oven dry),g cm-3
+dbovendry_30_cm_rpi.tif,dbovendry,30_cm,relative prediction interval,100,Bulk density (oven dry),g cm-3
+dbovendry_5_cm_h.tif,dbovendry,5_cm,95% high prediction interval,100,Bulk density (oven dry),g cm-3
+dbovendry_5_cm_l.tif,dbovendry,5_cm,95% low prediction interval,100,Bulk density (oven dry),g cm-3
+dbovendry_5_cm_p.tif,dbovendry,5_cm,prediction,100,Bulk density (oven dry),g cm-3
+dbovendry_5_cm_rpi.tif,dbovendry,5_cm,relative prediction interval,100,Bulk density (oven dry),g cm-3
+dbovendry_60_cm_h.tif,dbovendry,60_cm,95% high prediction interval,100,Bulk density (oven dry),g cm-3
+dbovendry_60_cm_l.tif,dbovendry,60_cm,95% low prediction interval,100,Bulk density (oven dry),g cm-3
+dbovendry_60_cm_p.tif,dbovendry,60_cm,prediction,100,Bulk density (oven dry),g cm-3
+dbovendry_60_cm_rpi.tif,dbovendry,60_cm,relative prediction interval,100,Bulk density (oven dry),g cm-3
+ec_0_cm_h.tif,ec,0_cm,95% high prediction interval,10,Electrical Conductivity (sat. paste),dS m-1
+ec_0_cm_l.tif,ec,0_cm,95% low prediction interval,10,Electrical Conductivity (sat. paste),dS m-1
+ec_0_cm_p.tif,ec,0_cm,prediction,10,Electrical Conductivity (sat. paste),dS m-1
+ec_0_cm_rpi.tif,ec,0_cm,relative prediction interval,100,Electrical Conductivity (sat. paste),dS m-1
+ec_100_cm_h.tif,ec,100_cm,95% high prediction interval,10,Electrical Conductivity (sat. paste),dS m-1
+ec_100_cm_l.tif,ec,100_cm,95% low prediction interval,10,Electrical Conductivity (sat. paste),dS m-1
+ec_100_cm_p.tif,ec,100_cm,prediction,10,Electrical Conductivity (sat. paste),dS m-1
+ec_100_cm_rpi.tif,ec,100_cm,relative prediction interval,100,Electrical Conductivity (sat. paste),dS m-1
+ec_15_cm_h.tif,ec,15_cm,95% high prediction interval,10,Electrical Conductivity (sat. paste),dS m-1
+ec_15_cm_l.tif,ec,15_cm,95% low prediction interval,10,Electrical Conductivity (sat. paste),dS m-1
+ec_15_cm_p.tif,ec,15_cm,prediction,10,Electrical Conductivity (sat. paste),dS m-1
+ec_15_cm_rpi.tif,ec,15_cm,relative prediction interval,100,Electrical Conductivity (sat. paste),dS m-1
+ec_150_cm_h.tif,ec,150_cm,95% high prediction interval,10,Electrical Conductivity (sat. paste),dS m-1
+ec_150_cm_l.tif,ec,150_cm,95% low prediction interval,10,Electrical Conductivity (sat. paste),dS m-1
+ec_150_cm_p.tif,ec,150_cm,prediction,10,Electrical Conductivity (sat. paste),dS m-1
+ec_150_cm_rpi.tif,ec,150_cm,relative prediction interval,100,Electrical Conductivity (sat. paste),dS m-1
+ec_30_cm_h.tif,ec,30_cm,95% high prediction interval,10,Electrical Conductivity (sat. paste),dS m-1
+ec_30_cm_l.tif,ec,30_cm,95% low prediction interval,10,Electrical Conductivity (sat. paste),dS m-1
+ec_30_cm_p.tif,ec,30_cm,prediction,10,Electrical Conductivity (sat. paste),dS m-1
+ec_30_cm_rpi.tif,ec,30_cm,relative prediction interval,100,Electrical Conductivity (sat. paste),dS m-1
+ec_5_cm_h.tif,ec,5_cm,95% high prediction interval,10,Electrical Conductivity (sat. paste),dS m-1
+ec_5_cm_l.tif,ec,5_cm,95% low prediction interval,10,Electrical Conductivity (sat. paste),dS m-1
+ec_5_cm_p.tif,ec,5_cm,prediction,10,Electrical Conductivity (sat. paste),dS m-1
+ec_5_cm_rpi.tif,ec,5_cm,relative prediction interval,100,Electrical Conductivity (sat. paste),dS m-1
+ec_60_cm_h.tif,ec,60_cm,95% high prediction interval,10,Electrical Conductivity (sat. paste),dS m-1
+ec_60_cm_l.tif,ec,60_cm,95% low prediction interval,10,Electrical Conductivity (sat. paste),dS m-1
+ec_60_cm_p.tif,ec,60_cm,prediction,10,Electrical Conductivity (sat. paste),dS m-1
+ec_60_cm_rpi.tif,ec,60_cm,relative prediction interval,100,Electrical Conductivity (sat. paste),dS m-1
+ecec_0_cm_h.tif,ecec,0_cm,95% high prediction interval,10,Effective cation exchange capacity,meq/100g
+ecec_0_cm_l.tif,ecec,0_cm,95% low prediction interval,10,Effective cation exchange capacity,meq/100g
+ecec_0_cm_p.tif,ecec,0_cm,prediction,10,Effective cation exchange capacity,meq/100g
+ecec_0_cm_rpi.tif,ecec,0_cm,relative prediction interval,100,Effective cation exchange capacity,meq/100g
+ecec_100_cm_h.tif,ecec,100_cm,95% high prediction interval,10,Effective cation exchange capacity,meq/100g
+ecec_100_cm_l.tif,ecec,100_cm,95% low prediction interval,10,Effective cation exchange capacity,meq/100g
+ecec_100_cm_p.tif,ecec,100_cm,prediction,10,Effective cation exchange capacity,meq/100g
+ecec_100_cm_rpi.tif,ecec,100_cm,relative prediction interval,100,Effective cation exchange capacity,meq/100g
+ecec_15_cm_h.tif,ecec,15_cm,95% high prediction interval,10,Effective cation exchange capacity,meq/100g
+ecec_15_cm_l.tif,ecec,15_cm,95% low prediction interval,10,Effective cation exchange capacity,meq/100g
+ecec_15_cm_p.tif,ecec,15_cm,prediction,10,Effective cation exchange capacity,meq/100g
+ecec_15_cm_rpi.tif,ecec,15_cm,relative prediction interval,100,Effective cation exchange capacity,meq/100g
+ecec_150_cm_h.tif,ecec,150_cm,95% high prediction interval,10,Effective cation exchange capacity,meq/100g
+ecec_150_cm_l.tif,ecec,150_cm,95% low prediction interval,10,Effective cation exchange capacity,meq/100g
+ecec_150_cm_p.tif,ecec,150_cm,prediction,10,Effective cation exchange capacity,meq/100g
+ecec_150_cm_rpi.tif,ecec,150_cm,relative prediction interval,100,Effective cation exchange capacity,meq/100g
+ecec_30_cm_h.tif,ecec,30_cm,95% high prediction interval,10,Effective cation exchange capacity,meq/100g
+ecec_30_cm_l.tif,ecec,30_cm,95% low prediction interval,10,Effective cation exchange capacity,meq/100g
+ecec_30_cm_p.tif,ecec,30_cm,prediction,10,Effective cation exchange capacity,meq/100g
+ecec_30_cm_rpi.tif,ecec,30_cm,relative prediction interval,100,Effective cation exchange capacity,meq/100g
+ecec_5_cm_h.tif,ecec,5_cm,95% high prediction interval,10,Effective cation exchange capacity,meq/100g
+ecec_5_cm_l.tif,ecec,5_cm,95% low prediction interval,10,Effective cation exchange capacity,meq/100g
+ecec_5_cm_p.tif,ecec,5_cm,prediction,10,Effective cation exchange capacity,meq/100g
+ecec_5_cm_rpi.tif,ecec,5_cm,relative prediction interval,100,Effective cation exchange capacity,meq/100g
+ecec_60_cm_h.tif,ecec,60_cm,95% high prediction interval,10,Effective cation exchange capacity,meq/100g
+ecec_60_cm_l.tif,ecec,60_cm,95% low prediction interval,10,Effective cation exchange capacity,meq/100g
+ecec_60_cm_p.tif,ecec,60_cm,prediction,10,Effective cation exchange capacity,meq/100g
+ecec_60_cm_rpi.tif,ecec,60_cm,relative prediction interval,100,Effective cation exchange capacity,meq/100g
+fragvol_0_cm_h.tif,fragvol,0_cm,95% high prediction interval,1,Rock (>2mm) content,percent volume
+fragvol_0_cm_l.tif,fragvol,0_cm,95% low prediction interval,1,Rock (>2mm) content,percent volume
+fragvol_0_cm_p.tif,fragvol,0_cm,prediction,1,Rock (>2mm) content,percent volume
+fragvol_0_cm_rpi.tif,fragvol,0_cm,relative prediction interval,100,Rock (>2mm) content,percent volume
+fragvol_100_cm_h.tif,fragvol,100_cm,95% high prediction interval,1,Rock (>2mm) content,percent volume
+fragvol_100_cm_l.tif,fragvol,100_cm,95% low prediction interval,1,Rock (>2mm) content,percent volume
+fragvol_100_cm_p.tif,fragvol,100_cm,prediction,1,Rock (>2mm) content,percent volume
+fragvol_100_cm_rpi.tif,fragvol,100_cm,relative prediction interval,100,Rock (>2mm) content,percent volume
+fragvol_15_cm_h.tif,fragvol,15_cm,95% high prediction interval,1,Rock (>2mm) content,percent volume
+fragvol_15_cm_l.tif,fragvol,15_cm,95% low prediction interval,1,Rock (>2mm) content,percent volume
+fragvol_15_cm_p.tif,fragvol,15_cm,prediction,1,Rock (>2mm) content,percent volume
+fragvol_15_cm_rpi.tif,fragvol,15_cm,relative prediction interval,100,Rock (>2mm) content,percent volume
+fragvol_150_cm_h.tif,fragvol,150_cm,95% high prediction interval,1,Rock (>2mm) content,percent volume
+fragvol_150_cm_l.tif,fragvol,150_cm,95% low prediction interval,1,Rock (>2mm) content,percent volume
+fragvol_150_cm_p.tif,fragvol,150_cm,prediction,1,Rock (>2mm) content,percent volume
+fragvol_150_cm_rpi.tif,fragvol,150_cm,relative prediction interval,100,Rock (>2mm) content,percent volume
+fragvol_30_cm_h.tif,fragvol,30_cm,95% high prediction interval,1,Rock (>2mm) content,percent volume
+fragvol_30_cm_l.tif,fragvol,30_cm,95% low prediction interval,1,Rock (>2mm) content,percent volume
+fragvol_30_cm_p.tif,fragvol,30_cm,prediction,1,Rock (>2mm) content,percent volume
+fragvol_30_cm_rpi.tif,fragvol,30_cm,relative prediction interval,100,Rock (>2mm) content,percent volume
+fragvol_5_cm_h.tif,fragvol,5_cm,95% high prediction interval,1,Rock (>2mm) content,percent volume
+fragvol_5_cm_l.tif,fragvol,5_cm,95% low prediction interval,1,Rock (>2mm) content,percent volume
+fragvol_5_cm_p.tif,fragvol,5_cm,prediction,1,Rock (>2mm) content,percent volume
+fragvol_5_cm_rpi.tif,fragvol,5_cm,relative prediction interval,100,Rock (>2mm) content,percent volume
+fragvol_60_cm_h.tif,fragvol,60_cm,95% high prediction interval,1,Rock (>2mm) content,percent volume
+fragvol_60_cm_l.tif,fragvol,60_cm,95% low prediction interval,1,Rock (>2mm) content,percent volume
+fragvol_60_cm_p.tif,fragvol,60_cm,prediction,1,Rock (>2mm) content,percent volume
+fragvol_60_cm_rpi.tif,fragvol,60_cm,relative prediction interval,100,Rock (>2mm) content,percent volume
+gypsum_0_cm_h.tif,gypsum,0_cm,95% high prediction interval,10,Gypsum (in <20 mm fraction),percent mass
+gypsum_0_cm_l.tif,gypsum,0_cm,95% low prediction interval,10,Gypsum (in <20 mm fraction),percent mass
+gypsum_0_cm_p.tif,gypsum,0_cm,prediction,10,Gypsum (in <20 mm fraction),percent mass
+gypsum_0_cm_rpi.tif,gypsum,0_cm,relative prediction interval,100,Gypsum (in <20 mm fraction),percent mass
+gypsum_100_cm_h.tif,gypsum,100_cm,95% high prediction interval,10,Gypsum (in <20 mm fraction),percent mass
+gypsum_100_cm_l.tif,gypsum,100_cm,95% low prediction interval,10,Gypsum (in <20 mm fraction),percent mass
+gypsum_100_cm_p.tif,gypsum,100_cm,prediction,10,Gypsum (in <20 mm fraction),percent mass
+gypsum_100_cm_rpi.tif,gypsum,100_cm,relative prediction interval,100,Gypsum (in <20 mm fraction),percent mass
+gypsum_15_cm_h.tif,gypsum,15_cm,95% high prediction interval,10,Gypsum (in <20 mm fraction),percent mass
+gypsum_15_cm_l.tif,gypsum,15_cm,95% low prediction interval,10,Gypsum (in <20 mm fraction),percent mass
+gypsum_15_cm_p.tif,gypsum,15_cm,prediction,10,Gypsum (in <20 mm fraction),percent mass
+gypsum_15_cm_rpi.tif,gypsum,15_cm,relative prediction interval,100,Gypsum (in <20 mm fraction),percent mass
+gypsum_150_cm_h.tif,gypsum,150_cm,95% high prediction interval,10,Gypsum (in <20 mm fraction),percent mass
+gypsum_150_cm_l.tif,gypsum,150_cm,95% low prediction interval,10,Gypsum (in <20 mm fraction),percent mass
+gypsum_150_cm_p.tif,gypsum,150_cm,prediction,10,Gypsum (in <20 mm fraction),percent mass
+gypsum_150_cm_rpi.tif,gypsum,150_cm,relative prediction interval,100,Gypsum (in <20 mm fraction),percent mass
+gypsum_30_cm_h.tif,gypsum,30_cm,95% high prediction interval,10,Gypsum (in <20 mm fraction),percent mass
+gypsum_30_cm_l.tif,gypsum,30_cm,95% low prediction interval,10,Gypsum (in <20 mm fraction),percent mass
+gypsum_30_cm_p.tif,gypsum,30_cm,prediction,10,Gypsum (in <20 mm fraction),percent mass
+gypsum_30_cm_rpi.tif,gypsum,30_cm,relative prediction interval,100,Gypsum (in <20 mm fraction),percent mass
+gypsum_5_cm_h.tif,gypsum,5_cm,95% high prediction interval,10,Gypsum (in <20 mm fraction),percent mass
+gypsum_5_cm_l.tif,gypsum,5_cm,95% low prediction interval,10,Gypsum (in <20 mm fraction),percent mass
+gypsum_5_cm_p.tif,gypsum,5_cm,prediction,10,Gypsum (in <20 mm fraction),percent mass
+gypsum_5_cm_rpi.tif,gypsum,5_cm,relative prediction interval,100,Gypsum (in <20 mm fraction),percent mass
+gypsum_60_cm_h.tif,gypsum,60_cm,95% high prediction interval,10,Gypsum (in <20 mm fraction),percent mass
+gypsum_60_cm_l.tif,gypsum,60_cm,95% low prediction interval,10,Gypsum (in <20 mm fraction),percent mass
+gypsum_60_cm_p.tif,gypsum,60_cm,prediction,10,Gypsum (in <20 mm fraction),percent mass
+gypsum_60_cm_rpi.tif,gypsum,60_cm,relative prediction interval,100,Gypsum (in <20 mm fraction),percent mass
+ph1to1h2o_0_cm_h.tif,ph1to1h2o,0_cm,95% high prediction interval,100,pH (1:1 method),-log10([H+])
+ph1to1h2o_0_cm_l.tif,ph1to1h2o,0_cm,95% low prediction interval,100,pH (1:1 method),-log10([H+])
+ph1to1h2o_0_cm_p.tif,ph1to1h2o,0_cm,prediction,100,pH (1:1 method),-log10([H+])
+ph1to1h2o_0_cm_rpi.tif,ph1to1h2o,0_cm,relative prediction interval,100,pH (1:1 method),-log10([H+])
+ph1to1h2o_100_cm_h.tif,ph1to1h2o,100_cm,95% high prediction interval,100,pH (1:1 method),-log10([H+])
+ph1to1h2o_100_cm_l.tif,ph1to1h2o,100_cm,95% low prediction interval,100,pH (1:1 method),-log10([H+])
+ph1to1h2o_100_cm_p.tif,ph1to1h2o,100_cm,prediction,100,pH (1:1 method),-log10([H+])
+ph1to1h2o_100_cm_rpi.tif,ph1to1h2o,100_cm,relative prediction interval,100,pH (1:1 method),-log10([H+])
+ph1to1h2o_15_cm_h.tif,ph1to1h2o,15_cm,95% high prediction interval,100,pH (1:1 method),-log10([H+])
+ph1to1h2o_15_cm_l.tif,ph1to1h2o,15_cm,95% low prediction interval,100,pH (1:1 method),-log10([H+])
+ph1to1h2o_15_cm_p.tif,ph1to1h2o,15_cm,prediction,100,pH (1:1 method),-log10([H+])
+ph1to1h2o_15_cm_rpi.tif,ph1to1h2o,15_cm,relative prediction interval,100,pH (1:1 method),-log10([H+])
+ph1to1h2o_150_cm_h.tif,ph1to1h2o,150_cm,95% high prediction interval,100,pH (1:1 method),-log10([H+])
+ph1to1h2o_150_cm_l.tif,ph1to1h2o,150_cm,95% low prediction interval,100,pH (1:1 method),-log10([H+])
+ph1to1h2o_150_cm_p.tif,ph1to1h2o,150_cm,prediction,100,pH (1:1 method),-log10([H+])
+ph1to1h2o_150_cm_rpi.tif,ph1to1h2o,150_cm,relative prediction interval,100,pH (1:1 method),-log10([H+])
+ph1to1h2o_30_cm_h.tif,ph1to1h2o,30_cm,95% high prediction interval,100,pH (1:1 method),-log10([H+])
+ph1to1h2o_30_cm_l.tif,ph1to1h2o,30_cm,95% low prediction interval,100,pH (1:1 method),-log10([H+])
+ph1to1h2o_30_cm_p.tif,ph1to1h2o,30_cm,prediction,100,pH (1:1 method),-log10([H+])
+ph1to1h2o_30_cm_rpi.tif,ph1to1h2o,30_cm,relative prediction interval,100,pH (1:1 method),-log10([H+])
+ph1to1h2o_5_cm_h.tif,ph1to1h2o,5_cm,95% high prediction interval,100,pH (1:1 method),-log10([H+])
+ph1to1h2o_5_cm_l.tif,ph1to1h2o,5_cm,95% low prediction interval,100,pH (1:1 method),-log10([H+])
+ph1to1h2o_5_cm_p.tif,ph1to1h2o,5_cm,prediction,100,pH (1:1 method),-log10([H+])
+ph1to1h2o_5_cm_rpi.tif,ph1to1h2o,5_cm,relative prediction interval,100,pH (1:1 method),-log10([H+])
+ph1to1h2o_60_cm_h.tif,ph1to1h2o,60_cm,95% high prediction interval,100,pH (1:1 method),-log10([H+])
+ph1to1h2o_60_cm_l.tif,ph1to1h2o,60_cm,95% low prediction interval,100,pH (1:1 method),-log10([H+])
+ph1to1h2o_60_cm_p.tif,ph1to1h2o,60_cm,prediction,100,pH (1:1 method),-log10([H+])
+ph1to1h2o_60_cm_rpi.tif,ph1to1h2o,60_cm,relative prediction interval,100,pH (1:1 method),-log10([H+])
+resdept_all_cm_h.tif,resdept,all_cm,95% high prediction interval,1,Depth to restriction,cm
+resdept_all_cm_l.tif,resdept,all_cm,95% low prediction interval,1,Depth to restriction,cm
+resdept_all_cm_p.tif,resdept,all_cm,prediction,1,Depth to restriction,cm
+resdept_all_cm_rpi.tif,resdept,all_cm,relative prediction interval,100,Depth to restriction,cm
+sandco_0_cm_h.tif,sandco,0_cm,95% high prediction interval,1,Coarse sand,percent mass
+sandco_0_cm_l.tif,sandco,0_cm,95% low prediction interval,1,Coarse sand,percent mass
+sandco_0_cm_p.tif,sandco,0_cm,prediction,1,Coarse sand,percent mass
+sandco_0_cm_rpi.tif,sandco,0_cm,relative prediction interval,100,Coarse sand,percent mass
+sandco_100_cm_h.tif,sandco,100_cm,95% high prediction interval,1,Coarse sand,percent mass
+sandco_100_cm_l.tif,sandco,100_cm,95% low prediction interval,1,Coarse sand,percent mass
+sandco_100_cm_p.tif,sandco,100_cm,prediction,1,Coarse sand,percent mass
+sandco_100_cm_rpi.tif,sandco,100_cm,relative prediction interval,100,Coarse sand,percent mass
+sandco_15_cm_h.tif,sandco,15_cm,95% high prediction interval,1,Coarse sand,percent mass
+sandco_15_cm_l.tif,sandco,15_cm,95% low prediction interval,1,Coarse sand,percent mass
+sandco_15_cm_p.tif,sandco,15_cm,prediction,1,Coarse sand,percent mass
+sandco_15_cm_rpi.tif,sandco,15_cm,relative prediction interval,100,Coarse sand,percent mass
+sandco_150_cm_h.tif,sandco,150_cm,95% high prediction interval,1,Coarse sand,percent mass
+sandco_150_cm_l.tif,sandco,150_cm,95% low prediction interval,1,Coarse sand,percent mass
+sandco_150_cm_p.tif,sandco,150_cm,prediction,1,Coarse sand,percent mass
+sandco_150_cm_rpi.tif,sandco,150_cm,relative prediction interval,100,Coarse sand,percent mass
+sandco_30_cm_h.tif,sandco,30_cm,95% high prediction interval,1,Coarse sand,percent mass
+sandco_30_cm_l.tif,sandco,30_cm,95% low prediction interval,1,Coarse sand,percent mass
+sandco_30_cm_p.tif,sandco,30_cm,prediction,1,Coarse sand,percent mass
+sandco_30_cm_rpi.tif,sandco,30_cm,relative prediction interval,100,Coarse sand,percent mass
+sandco_5_cm_h.tif,sandco,5_cm,95% high prediction interval,1,Coarse sand,percent mass
+sandco_5_cm_l.tif,sandco,5_cm,95% low prediction interval,1,Coarse sand,percent mass
+sandco_5_cm_p.tif,sandco,5_cm,prediction,1,Coarse sand,percent mass
+sandco_5_cm_rpi.tif,sandco,5_cm,relative prediction interval,100,Coarse sand,percent mass
+sandco_60_cm_h.tif,sandco,60_cm,95% high prediction interval,1,Coarse sand,percent mass
+sandco_60_cm_l.tif,sandco,60_cm,95% low prediction interval,1,Coarse sand,percent mass
+sandco_60_cm_p.tif,sandco,60_cm,prediction,1,Coarse sand,percent mass
+sandco_60_cm_rpi.tif,sandco,60_cm,relative prediction interval,100,Coarse sand,percent mass
+sandfine_0_cm_h.tif,sandfine,0_cm,95% high prediction interval,1,Fine sand,percent mass
+sandfine_0_cm_l.tif,sandfine,0_cm,95% low prediction interval,1,Fine sand,percent mass
+sandfine_0_cm_p.tif,sandfine,0_cm,prediction,1,Fine sand,percent mass
+sandfine_0_cm_rpi.tif,sandfine,0_cm,relative prediction interval,100,Fine sand,percent mass
+sandfine_100_cm_h.tif,sandfine,100_cm,95% high prediction interval,1,Fine sand,percent mass
+sandfine_100_cm_l.tif,sandfine,100_cm,95% low prediction interval,1,Fine sand,percent mass
+sandfine_100_cm_p.tif,sandfine,100_cm,prediction,1,Fine sand,percent mass
+sandfine_100_cm_rpi.tif,sandfine,100_cm,relative prediction interval,100,Fine sand,percent mass
+sandfine_15_cm_h.tif,sandfine,15_cm,95% high prediction interval,1,Fine sand,percent mass
+sandfine_15_cm_l.tif,sandfine,15_cm,95% low prediction interval,1,Fine sand,percent mass
+sandfine_15_cm_p.tif,sandfine,15_cm,prediction,1,Fine sand,percent mass
+sandfine_15_cm_rpi.tif,sandfine,15_cm,relative prediction interval,100,Fine sand,percent mass
+sandfine_150_cm_h.tif,sandfine,150_cm,95% high prediction interval,1,Fine sand,percent mass
+sandfine_150_cm_l.tif,sandfine,150_cm,95% low prediction interval,1,Fine sand,percent mass
+sandfine_150_cm_p.tif,sandfine,150_cm,prediction,1,Fine sand,percent mass
+sandfine_150_cm_rpi.tif,sandfine,150_cm,relative prediction interval,100,Fine sand,percent mass
+sandfine_30_cm_h.tif,sandfine,30_cm,95% high prediction interval,1,Fine sand,percent mass
+sandfine_30_cm_l.tif,sandfine,30_cm,95% low prediction interval,1,Fine sand,percent mass
+sandfine_30_cm_p.tif,sandfine,30_cm,prediction,1,Fine sand,percent mass
+sandfine_30_cm_rpi.tif,sandfine,30_cm,relative prediction interval,100,Fine sand,percent mass
+sandfine_5_cm_h.tif,sandfine,5_cm,95% high prediction interval,1,Fine sand,percent mass
+sandfine_5_cm_l.tif,sandfine,5_cm,95% low prediction interval,1,Fine sand,percent mass
+sandfine_5_cm_p.tif,sandfine,5_cm,prediction,1,Fine sand,percent mass
+sandfine_5_cm_rpi.tif,sandfine,5_cm,relative prediction interval,100,Fine sand,percent mass
+sandfine_60_cm_h.tif,sandfine,60_cm,95% high prediction interval,1,Fine sand,percent mass
+sandfine_60_cm_l.tif,sandfine,60_cm,95% low prediction interval,1,Fine sand,percent mass
+sandfine_60_cm_p.tif,sandfine,60_cm,prediction,1,Fine sand,percent mass
+sandfine_60_cm_rpi.tif,sandfine,60_cm,relative prediction interval,100,Fine sand,percent mass
+sandmed_0_cm_h.tif,sandmed,0_cm,95% high prediction interval,1,Medium sand,percent mass
+sandmed_0_cm_l.tif,sandmed,0_cm,95% low prediction interval,1,Medium sand,percent mass
+sandmed_0_cm_p.tif,sandmed,0_cm,prediction,1,Medium sand,percent mass
+sandmed_0_cm_rpi.tif,sandmed,0_cm,relative prediction interval,100,Medium sand,percent mass
+sandmed_100_cm_h.tif,sandmed,100_cm,95% high prediction interval,1,Medium sand,percent mass
+sandmed_100_cm_l.tif,sandmed,100_cm,95% low prediction interval,1,Medium sand,percent mass
+sandmed_100_cm_p.tif,sandmed,100_cm,prediction,1,Medium sand,percent mass
+sandmed_100_cm_rpi.tif,sandmed,100_cm,relative prediction interval,100,Medium sand,percent mass
+sandmed_15_cm_h.tif,sandmed,15_cm,95% high prediction interval,1,Medium sand,percent mass
+sandmed_15_cm_l.tif,sandmed,15_cm,95% low prediction interval,1,Medium sand,percent mass
+sandmed_15_cm_p.tif,sandmed,15_cm,prediction,1,Medium sand,percent mass
+sandmed_15_cm_rpi.tif,sandmed,15_cm,relative prediction interval,100,Medium sand,percent mass
+sandmed_150_cm_h.tif,sandmed,150_cm,95% high prediction interval,1,Medium sand,percent mass
+sandmed_150_cm_l.tif,sandmed,150_cm,95% low prediction interval,1,Medium sand,percent mass
+sandmed_150_cm_p.tif,sandmed,150_cm,prediction,1,Medium sand,percent mass
+sandmed_150_cm_rpi.tif,sandmed,150_cm,relative prediction interval,100,Medium sand,percent mass
+sandmed_30_cm_h.tif,sandmed,30_cm,95% high prediction interval,1,Medium sand,percent mass
+sandmed_30_cm_l.tif,sandmed,30_cm,95% low prediction interval,1,Medium sand,percent mass
+sandmed_30_cm_p.tif,sandmed,30_cm,prediction,1,Medium sand,percent mass
+sandmed_30_cm_rpi.tif,sandmed,30_cm,relative prediction interval,100,Medium sand,percent mass
+sandmed_5_cm_h.tif,sandmed,5_cm,95% high prediction interval,1,Medium sand,percent mass
+sandmed_5_cm_l.tif,sandmed,5_cm,95% low prediction interval,1,Medium sand,percent mass
+sandmed_5_cm_p.tif,sandmed,5_cm,prediction,1,Medium sand,percent mass
+sandmed_5_cm_rpi.tif,sandmed,5_cm,relative prediction interval,100,Medium sand,percent mass
+sandmed_60_cm_h.tif,sandmed,60_cm,95% high prediction interval,1,Medium sand,percent mass
+sandmed_60_cm_l.tif,sandmed,60_cm,95% low prediction interval,1,Medium sand,percent mass
+sandmed_60_cm_p.tif,sandmed,60_cm,prediction,1,Medium sand,percent mass
+sandmed_60_cm_rpi.tif,sandmed,60_cm,relative prediction interval,100,Medium sand,percent mass
+sandtotal_0_cm_h.tif,sandtotal,0_cm,95% high prediction interval,1,Sand content,percent mass
+sandtotal_0_cm_l.tif,sandtotal,0_cm,95% low prediction interval,1,Sand content,percent mass
+sandtotal_0_cm_p.tif,sandtotal,0_cm,prediction,1,Sand content,percent mass
+sandtotal_0_cm_rpi.tif,sandtotal,0_cm,relative prediction interval,100,Sand content,percent mass
+sandtotal_100_cm_h.tif,sandtotal,100_cm,95% high prediction interval,1,Sand content,percent mass
+sandtotal_100_cm_l.tif,sandtotal,100_cm,95% low prediction interval,1,Sand content,percent mass
+sandtotal_100_cm_p.tif,sandtotal,100_cm,prediction,1,Sand content,percent mass
+sandtotal_100_cm_rpi.tif,sandtotal,100_cm,relative prediction interval,100,Sand content,percent mass
+sandtotal_15_cm_h.tif,sandtotal,15_cm,95% high prediction interval,1,Sand content,percent mass
+sandtotal_15_cm_l.tif,sandtotal,15_cm,95% low prediction interval,1,Sand content,percent mass
+sandtotal_15_cm_p.tif,sandtotal,15_cm,prediction,1,Sand content,percent mass
+sandtotal_15_cm_rpi.tif,sandtotal,15_cm,relative prediction interval,100,Sand content,percent mass
+sandtotal_150_cm_h.tif,sandtotal,150_cm,95% high prediction interval,1,Sand content,percent mass
+sandtotal_150_cm_l.tif,sandtotal,150_cm,95% low prediction interval,1,Sand content,percent mass
+sandtotal_150_cm_p.tif,sandtotal,150_cm,prediction,1,Sand content,percent mass
+sandtotal_150_cm_rpi.tif,sandtotal,150_cm,relative prediction interval,100,Sand content,percent mass
+sandtotal_30_cm_h.tif,sandtotal,30_cm,95% high prediction interval,1,Sand content,percent mass
+sandtotal_30_cm_l.tif,sandtotal,30_cm,95% low prediction interval,1,Sand content,percent mass
+sandtotal_30_cm_p.tif,sandtotal,30_cm,prediction,1,Sand content,percent mass
+sandtotal_30_cm_rpi.tif,sandtotal,30_cm,relative prediction interval,100,Sand content,percent mass
+sandtotal_5_cm_h.tif,sandtotal,5_cm,95% high prediction interval,1,Sand content,percent mass
+sandtotal_5_cm_l.tif,sandtotal,5_cm,95% low prediction interval,1,Sand content,percent mass
+sandtotal_5_cm_p.tif,sandtotal,5_cm,prediction,1,Sand content,percent mass
+sandtotal_5_cm_rpi.tif,sandtotal,5_cm,relative prediction interval,100,Sand content,percent mass
+sandtotal_60_cm_h.tif,sandtotal,60_cm,95% high prediction interval,1,Sand content,percent mass
+sandtotal_60_cm_l.tif,sandtotal,60_cm,95% low prediction interval,1,Sand content,percent mass
+sandtotal_60_cm_p.tif,sandtotal,60_cm,prediction,1,Sand content,percent mass
+sandtotal_60_cm_rpi.tif,sandtotal,60_cm,relative prediction interval,100,Sand content,percent mass
+sandvc_0_cm_h.tif,sandvc,0_cm,95% high prediction interval,1,Very coarse sand,percent mass
+sandvc_0_cm_l.tif,sandvc,0_cm,95% low prediction interval,1,Very coarse sand,percent mass
+sandvc_0_cm_p.tif,sandvc,0_cm,prediction,1,Very coarse sand,percent mass
+sandvc_0_cm_rpi.tif,sandvc,0_cm,relative prediction interval,100,Very coarse sand,percent mass
+sandvc_100_cm_h.tif,sandvc,100_cm,95% high prediction interval,1,Very coarse sand,percent mass
+sandvc_100_cm_l.tif,sandvc,100_cm,95% low prediction interval,1,Very coarse sand,percent mass
+sandvc_100_cm_p.tif,sandvc,100_cm,prediction,1,Very coarse sand,percent mass
+sandvc_100_cm_rpi.tif,sandvc,100_cm,relative prediction interval,100,Very coarse sand,percent mass
+sandvc_15_cm_h.tif,sandvc,15_cm,95% high prediction interval,1,Very coarse sand,percent mass
+sandvc_15_cm_l.tif,sandvc,15_cm,95% low prediction interval,1,Very coarse sand,percent mass
+sandvc_15_cm_p.tif,sandvc,15_cm,prediction,1,Very coarse sand,percent mass
+sandvc_15_cm_rpi.tif,sandvc,15_cm,relative prediction interval,100,Very coarse sand,percent mass
+sandvc_150_cm_h.tif,sandvc,150_cm,95% high prediction interval,1,Very coarse sand,percent mass
+sandvc_150_cm_l.tif,sandvc,150_cm,95% low prediction interval,1,Very coarse sand,percent mass
+sandvc_150_cm_p.tif,sandvc,150_cm,prediction,1,Very coarse sand,percent mass
+sandvc_150_cm_rpi.tif,sandvc,150_cm,relative prediction interval,100,Very coarse sand,percent mass
+sandvc_30_cm_h.tif,sandvc,30_cm,95% high prediction interval,1,Very coarse sand,percent mass
+sandvc_30_cm_l.tif,sandvc,30_cm,95% low prediction interval,1,Very coarse sand,percent mass
+sandvc_30_cm_p.tif,sandvc,30_cm,prediction,1,Very coarse sand,percent mass
+sandvc_30_cm_rpi.tif,sandvc,30_cm,relative prediction interval,100,Very coarse sand,percent mass
+sandvc_5_cm_h.tif,sandvc,5_cm,95% high prediction interval,1,Very coarse sand,percent mass
+sandvc_5_cm_l.tif,sandvc,5_cm,95% low prediction interval,1,Very coarse sand,percent mass
+sandvc_5_cm_p.tif,sandvc,5_cm,prediction,1,Very coarse sand,percent mass
+sandvc_5_cm_rpi.tif,sandvc,5_cm,relative prediction interval,100,Very coarse sand,percent mass
+sandvc_60_cm_h.tif,sandvc,60_cm,95% high prediction interval,1,Very coarse sand,percent mass
+sandvc_60_cm_l.tif,sandvc,60_cm,95% low prediction interval,1,Very coarse sand,percent mass
+sandvc_60_cm_p.tif,sandvc,60_cm,prediction,1,Very coarse sand,percent mass
+sandvc_60_cm_rpi.tif,sandvc,60_cm,relative prediction interval,100,Very coarse sand,percent mass
+sandvf_0_cm_h.tif,sandvf,0_cm,95% high prediction interval,1,Very fine sand,percent mass
+sandvf_0_cm_l.tif,sandvf,0_cm,95% low prediction interval,1,Very fine sand,percent mass
+sandvf_0_cm_p.tif,sandvf,0_cm,prediction,1,Very fine sand,percent mass
+sandvf_0_cm_rpi.tif,sandvf,0_cm,relative prediction interval,100,Very fine sand,percent mass
+sandvf_100_cm_h.tif,sandvf,100_cm,95% high prediction interval,1,Very fine sand,percent mass
+sandvf_100_cm_l.tif,sandvf,100_cm,95% low prediction interval,1,Very fine sand,percent mass
+sandvf_100_cm_p.tif,sandvf,100_cm,prediction,1,Very fine sand,percent mass
+sandvf_100_cm_rpi.tif,sandvf,100_cm,relative prediction interval,100,Very fine sand,percent mass
+sandvf_15_cm_h.tif,sandvf,15_cm,95% high prediction interval,1,Very fine sand,percent mass
+sandvf_15_cm_l.tif,sandvf,15_cm,95% low prediction interval,1,Very fine sand,percent mass
+sandvf_15_cm_p.tif,sandvf,15_cm,prediction,1,Very fine sand,percent mass
+sandvf_15_cm_rpi.tif,sandvf,15_cm,relative prediction interval,100,Very fine sand,percent mass
+sandvf_150_cm_h.tif,sandvf,150_cm,95% high prediction interval,1,Very fine sand,percent mass
+sandvf_150_cm_l.tif,sandvf,150_cm,95% low prediction interval,1,Very fine sand,percent mass
+sandvf_150_cm_p.tif,sandvf,150_cm,prediction,1,Very fine sand,percent mass
+sandvf_150_cm_rpi.tif,sandvf,150_cm,relative prediction interval,100,Very fine sand,percent mass
+sandvf_30_cm_h.tif,sandvf,30_cm,95% high prediction interval,1,Very fine sand,percent mass
+sandvf_30_cm_l.tif,sandvf,30_cm,95% low prediction interval,1,Very fine sand,percent mass
+sandvf_30_cm_p.tif,sandvf,30_cm,prediction,1,Very fine sand,percent mass
+sandvf_30_cm_rpi.tif,sandvf,30_cm,relative prediction interval,100,Very fine sand,percent mass
+sandvf_5_cm_h.tif,sandvf,5_cm,95% high prediction interval,1,Very fine sand,percent mass
+sandvf_5_cm_l.tif,sandvf,5_cm,95% low prediction interval,1,Very fine sand,percent mass
+sandvf_5_cm_p.tif,sandvf,5_cm,prediction,1,Very fine sand,percent mass
+sandvf_5_cm_rpi.tif,sandvf,5_cm,relative prediction interval,100,Very fine sand,percent mass
+sandvf_60_cm_h.tif,sandvf,60_cm,95% high prediction interval,1,Very fine sand,percent mass
+sandvf_60_cm_l.tif,sandvf,60_cm,95% low prediction interval,1,Very fine sand,percent mass
+sandvf_60_cm_p.tif,sandvf,60_cm,prediction,1,Very fine sand,percent mass
+sandvf_60_cm_rpi.tif,sandvf,60_cm,relative prediction interval,100,Very fine sand,percent mass
+sar_0_cm_h.tif,sar,0_cm,95% high prediction interval,1,Sodium adsorption ratio,ratio
+sar_0_cm_l.tif,sar,0_cm,95% low prediction interval,1,Sodium adsorption ratio,ratio
+sar_0_cm_p.tif,sar,0_cm,prediction,1,Sodium adsorption ratio,ratio
+sar_0_cm_rpi.tif,sar,0_cm,relative prediction interval,100,Sodium adsorption ratio,ratio
+sar_100_cm_h.tif,sar,100_cm,95% high prediction interval,1,Sodium adsorption ratio,ratio
+sar_100_cm_l.tif,sar,100_cm,95% low prediction interval,1,Sodium adsorption ratio,ratio
+sar_100_cm_p.tif,sar,100_cm,prediction,1,Sodium adsorption ratio,ratio
+sar_100_cm_rpi.tif,sar,100_cm,relative prediction interval,100,Sodium adsorption ratio,ratio
+sar_15_cm_h.tif,sar,15_cm,95% high prediction interval,1,Sodium adsorption ratio,ratio
+sar_15_cm_l.tif,sar,15_cm,95% low prediction interval,1,Sodium adsorption ratio,ratio
+sar_15_cm_p.tif,sar,15_cm,prediction,1,Sodium adsorption ratio,ratio
+sar_15_cm_rpi.tif,sar,15_cm,relative prediction interval,100,Sodium adsorption ratio,ratio
+sar_150_cm_h.tif,sar,150_cm,95% high prediction interval,1,Sodium adsorption ratio,ratio
+sar_150_cm_l.tif,sar,150_cm,95% low prediction interval,1,Sodium adsorption ratio,ratio
+sar_150_cm_p.tif,sar,150_cm,prediction,1,Sodium adsorption ratio,ratio
+sar_150_cm_rpi.tif,sar,150_cm,relative prediction interval,100,Sodium adsorption ratio,ratio
+sar_30_cm_h.tif,sar,30_cm,95% high prediction interval,1,Sodium adsorption ratio,ratio
+sar_30_cm_l.tif,sar,30_cm,95% low prediction interval,1,Sodium adsorption ratio,ratio
+sar_30_cm_p.tif,sar,30_cm,prediction,1,Sodium adsorption ratio,ratio
+sar_30_cm_rpi.tif,sar,30_cm,relative prediction interval,100,Sodium adsorption ratio,ratio
+sar_5_cm_h.tif,sar,5_cm,95% high prediction interval,1,Sodium adsorption ratio,ratio
+sar_5_cm_l.tif,sar,5_cm,95% low prediction interval,1,Sodium adsorption ratio,ratio
+sar_5_cm_p.tif,sar,5_cm,prediction,1,Sodium adsorption ratio,ratio
+sar_5_cm_rpi.tif,sar,5_cm,relative prediction interval,100,Sodium adsorption ratio,ratio
+sar_60_cm_h.tif,sar,60_cm,95% high prediction interval,1,Sodium adsorption ratio,ratio
+sar_60_cm_l.tif,sar,60_cm,95% low prediction interval,1,Sodium adsorption ratio,ratio
+sar_60_cm_p.tif,sar,60_cm,prediction,1,Sodium adsorption ratio,ratio
+sar_60_cm_rpi.tif,sar,60_cm,relative prediction interval,100,Sodium adsorption ratio,ratio
+silttotal_0_cm_h.tif,silttotal,0_cm,95% high prediction interval,1,Silt content,percent mass
+silttotal_0_cm_l.tif,silttotal,0_cm,95% low prediction interval,1,Silt content,percent mass
+silttotal_0_cm_p.tif,silttotal,0_cm,prediction,1,Silt content,percent mass
+silttotal_0_cm_rpi.tif,silttotal,0_cm,relative prediction interval,100,Silt content,percent mass
+silttotal_100_cm_h.tif,silttotal,100_cm,95% high prediction interval,1,Silt content,percent mass
+silttotal_100_cm_l.tif,silttotal,100_cm,95% low prediction interval,1,Silt content,percent mass
+silttotal_100_cm_p.tif,silttotal,100_cm,prediction,1,Silt content,percent mass
+silttotal_100_cm_rpi.tif,silttotal,100_cm,relative prediction interval,100,Silt content,percent mass
+silttotal_15_cm_h.tif,silttotal,15_cm,95% high prediction interval,1,Silt content,percent mass
+silttotal_15_cm_l.tif,silttotal,15_cm,95% low prediction interval,1,Silt content,percent mass
+silttotal_15_cm_p.tif,silttotal,15_cm,prediction,1,Silt content,percent mass
+silttotal_15_cm_rpi.tif,silttotal,15_cm,relative prediction interval,100,Silt content,percent mass
+silttotal_150_cm_h.tif,silttotal,150_cm,95% high prediction interval,1,Silt content,percent mass
+silttotal_150_cm_l.tif,silttotal,150_cm,95% low prediction interval,1,Silt content,percent mass
+silttotal_150_cm_p.tif,silttotal,150_cm,prediction,1,Silt content,percent mass
+silttotal_150_cm_rpi.tif,silttotal,150_cm,relative prediction interval,100,Silt content,percent mass
+silttotal_30_cm_h.tif,silttotal,30_cm,95% high prediction interval,1,Silt content,percent mass
+silttotal_30_cm_l.tif,silttotal,30_cm,95% low prediction interval,1,Silt content,percent mass
+silttotal_30_cm_p.tif,silttotal,30_cm,prediction,1,Silt content,percent mass
+silttotal_30_cm_rpi.tif,silttotal,30_cm,relative prediction interval,100,Silt content,percent mass
+silttotal_5_cm_h.tif,silttotal,5_cm,95% high prediction interval,1,Silt content,percent mass
+silttotal_5_cm_l.tif,silttotal,5_cm,95% low prediction interval,1,Silt content,percent mass
+silttotal_5_cm_p.tif,silttotal,5_cm,prediction,1,Silt content,percent mass
+silttotal_5_cm_rpi.tif,silttotal,5_cm,relative prediction interval,100,Silt content,percent mass
+silttotal_60_cm_h.tif,silttotal,60_cm,95% high prediction interval,1,Silt content,percent mass
+silttotal_60_cm_l.tif,silttotal,60_cm,95% low prediction interval,1,Silt content,percent mass
+silttotal_60_cm_p.tif,silttotal,60_cm,prediction,1,Silt content,percent mass
+silttotal_60_cm_rpi.tif,silttotal,60_cm,relative prediction interval,100,Silt content,percent mass
+soc_0_cm_h.tif,soc,0_cm,95% high prediction interval,1000,Soil organic carbon,percent mass
+soc_0_cm_l.tif,soc,0_cm,95% low prediction interval,1000,Soil organic carbon,percent mass
+soc_0_cm_p.tif,soc,0_cm,prediction,1000,Soil organic carbon,percent mass
+soc_0_cm_rpi.tif,soc,0_cm,relative prediction interval,100,Soil organic carbon,percent mass
+soc_100_cm_h.tif,soc,100_cm,95% high prediction interval,1000,Soil organic carbon,percent mass
+soc_100_cm_l.tif,soc,100_cm,95% low prediction interval,1000,Soil organic carbon,percent mass
+soc_100_cm_p.tif,soc,100_cm,prediction,1000,Soil organic carbon,percent mass
+soc_100_cm_rpi.tif,soc,100_cm,relative prediction interval,100,Soil organic carbon,percent mass
+soc_15_cm_h.tif,soc,15_cm,95% high prediction interval,1000,Soil organic carbon,percent mass
+soc_15_cm_l.tif,soc,15_cm,95% low prediction interval,1000,Soil organic carbon,percent mass
+soc_15_cm_p.tif,soc,15_cm,prediction,1000,Soil organic carbon,percent mass
+soc_15_cm_rpi.tif,soc,15_cm,relative prediction interval,100,Soil organic carbon,percent mass
+soc_150_cm_h.tif,soc,150_cm,95% high prediction interval,1000,Soil organic carbon,percent mass
+soc_150_cm_l.tif,soc,150_cm,95% low prediction interval,1000,Soil organic carbon,percent mass
+soc_150_cm_p.tif,soc,150_cm,prediction,1000,Soil organic carbon,percent mass
+soc_150_cm_rpi.tif,soc,150_cm,relative prediction interval,100,Soil organic carbon,percent mass
+soc_30_cm_h.tif,soc,30_cm,95% high prediction interval,1000,Soil organic carbon,percent mass
+soc_30_cm_l.tif,soc,30_cm,95% low prediction interval,1000,Soil organic carbon,percent mass
+soc_30_cm_p.tif,soc,30_cm,prediction,1000,Soil organic carbon,percent mass
+soc_30_cm_rpi.tif,soc,30_cm,relative prediction interval,100,Soil organic carbon,percent mass
+soc_5_cm_h.tif,soc,5_cm,95% high prediction interval,1000,Soil organic carbon,percent mass
+soc_5_cm_l.tif,soc,5_cm,95% low prediction interval,1000,Soil organic carbon,percent mass
+soc_5_cm_p.tif,soc,5_cm,prediction,1000,Soil organic carbon,percent mass
+soc_5_cm_rpi.tif,soc,5_cm,relative prediction interval,100,Soil organic carbon,percent mass
+soc_60_cm_h.tif,soc,60_cm,95% high prediction interval,1000,Soil organic carbon,percent mass
+soc_60_cm_l.tif,soc,60_cm,95% low prediction interval,1000,Soil organic carbon,percent mass
+soc_60_cm_p.tif,soc,60_cm,prediction,1000,Soil organic carbon,percent mass
+soc_60_cm_rpi.tif,soc,60_cm,relative prediction interval,100,Soil organic carbon,percent mass

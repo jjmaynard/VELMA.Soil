@@ -1,0 +1,100 @@
+---
+title: "Geospatial Analysis Dashboard"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(raster)
+library(leaflet)
+```
+
+```{r}
+agg_factor = 3  # Aggregates in blocks of 2x2
+velma_classes <- raster("C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/velma_soil_classes.tif")
+slope <- raster("C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/slope_gr.tif")
+slope_agg = aggregate(slope, fact=agg_factor, fun=mean)
+twi <- raster("C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/twi_gr.tif")
+twi_agg = aggregate(twi, fact=agg_factor, fun=mean)
+clay_0 <- raster("C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/clay_0_Snohomish_UTM.tif")
+db_0 <- raster("C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/db_0_Snohomish_UTM.tif")
+```
+
+VELMA Classes
+=====================================
+
+Row {data-height=650}
+-------------------------------------
+
+### Map 1
+
+```{r}
+# Your leaflet code for the first map
+leaflet() %>% 
+  addTiles() %>% 
+  addRasterImage(velma_classes, colors=colorNumeric(palette = "viridis", domain = NULL), opacity = 0.8) %>%
+  addLayersControl(overlayGroups = c("Velma Classes"), options = layersControlOptions(collapsed = FALSE))
+```
+
+Slope %
+=====================================
+
+Row {data-height=650}
+-------------------------------------
+
+### Map 2
+
+```{r}
+leaflet() %>% 
+  addTiles() %>% 
+  addRasterImage(slope_agg, colors=colorNumeric(palette = "viridis", domain = NULL), opacity = 0.8) %>%
+  addLayersControl(overlayGroups = c("Slope %"), options = layersControlOptions(collapsed = FALSE))
+```
+
+
+TWI
+=====================================
+
+Row {data-height=650}
+-------------------------------------
+
+### Map 3
+```{r}
+leaflet() %>% 
+  addTiles() %>% 
+  addRasterImage(twi_agg, colors=colorNumeric(palette = "viridis", domain = NULL), opacity = 0.8) %>%
+  addLayersControl(overlayGroups = c("Topographic Wetness Index"), options = layersControlOptions(collapsed = FALSE))
+
+```
+Clay %
+=====================================
+
+Row {data-height=650}
+-------------------------------------
+
+### Map 4
+```{r}
+leaflet() %>% 
+  addTiles() %>% 
+  addRasterImage(clay_0, colors=colorNumeric(palette = "viridis", domain = NULL), opacity = 0.8) %>%
+  addLayersControl(overlayGroups = c("Clay %"), options = layersControlOptions(collapsed = FALSE))
+```
+Bulk Density
+=====================================
+
+Row {data-height=650}
+-------------------------------------
+
+### Map 5
+```{r}
+leaflet() %>% 
+  addTiles() %>% 
+  addRasterImage(db_0, colors=colorNumeric(palette = "viridis", domain = NULL), opacity = 0.8) %>%
+  addLayersControl(overlayGroups = c("Bulk Density"), options = layersControlOptions(collapsed = FALSE))
+```
+
+
