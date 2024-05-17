@@ -17,11 +17,29 @@ library(leaflet)
 agg_factor = 3  # Aggregates in blocks of 2x2
 velma_classes <- raster("C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/velma_soil_classes.tif")
 slope <- raster("C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/slope_gr.tif")
-slope_agg = aggregate(slope, fact=agg_factor, fun=mean)
+slope_agg = raster::aggregate(slope, fact=agg_factor, fun=base::mean)
 twi <- raster("C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/twi_gr.tif")
-twi_agg = aggregate(twi, fact=agg_factor, fun=mean)
-clay_0 <- raster("C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/clay_0_Snohomish_UTM.tif")
-db_0 <- raster("C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/db_0_Snohomish_UTM.tif")
+twi_agg = raster::aggregate(twi, fact=agg_factor, fun=base::mean)
+clay_0 <- raster("C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/Snohomish/clay_0_Snohomish_UTM.tif")
+db_0 <- raster("C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/Snohomish/db_0_Snohomish_UTM.tif")
+
+tn1 <- raster("C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/Snohomish/tn_rast1_Snohomish.tif")
+tn1 <- tn1/1000
+
+tc1 <- raster("C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/Snohomish/soc_rast1_Snohomish.tif")
+tc1 <- tc1/100
+
+sg100_cn <- tc1/tn1
+sg100_cn[sg100_cn>100] <- 100
+
+tc0_solus <- raster("C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/Snohomish/soc_0_Snohomish.tif")
+tc0_solus <- tc0_solus/10000
+
+solus_cn <- tc0_solus/tn1
+solus_cn[solus_cn>60] <- 60
+
+
+
 ```
 
 VELMA Classes
@@ -97,4 +115,69 @@ leaflet() %>%
   addLayersControl(overlayGroups = c("Bulk Density"), options = layersControlOptions(collapsed = FALSE))
 ```
 
+SOC SOLUS
+=====================================
 
+Row {data-height=650}
+-------------------------------------
+### Map 6
+```{r}
+leaflet() %>% 
+  addTiles() %>% 
+  addRasterImage(tc0_solus, colors=colorNumeric(palette = "viridis", domain = NULL), opacity = 1) %>%
+  addLayersControl(overlayGroups = c("SOLUS SOC"), options = layersControlOptions(collapsed = FALSE))
+```
+
+SOC SG100
+=====================================
+
+Row {data-height=650}
+-------------------------------------
+### Map 7
+```{r}
+leaflet() %>% 
+  addTiles() %>% 
+  addRasterImage(tc1, colors=colorNumeric(palette = "viridis", domain = NULL), opacity = 1) %>%
+  addLayersControl(overlayGroups = c("SG100 SOC"), options = layersControlOptions(collapsed = FALSE))
+```
+
+TN SG100
+=====================================
+
+Row {data-height=650}
+-------------------------------------
+
+### Map 8
+```{r}
+leaflet() %>% 
+  addTiles() %>% 
+  addRasterImage(tn1, colors=colorNumeric(palette = "viridis", domain = NULL), opacity = 1) %>%
+  addLayersControl(overlayGroups = c("SG100 TN"), options = layersControlOptions(collapsed = FALSE))
+```
+
+C/N SG100
+=====================================
+
+Row {data-height=650}
+-------------------------------------
+
+### Map 9
+```{r}
+leaflet() %>% 
+  addTiles() %>% 
+  addRasterImage(sg100_cn, colors=colorNumeric(palette = "viridis", domain = NULL), opacity = 1) %>%
+  addLayersControl(overlayGroups = c("SG100 C/N"), options = layersControlOptions(collapsed = FALSE))
+```
+
+C/N SOLUS-SG100
+=====================================
+
+Row {data-height=650}
+-------------------------------------
+### Map 10
+```{r}
+leaflet() %>% 
+  addTiles() %>% 
+  addRasterImage(solus_cn, colors=colorNumeric(palette = "viridis", domain = NULL), opacity = 1) %>%
+  addLayersControl(overlayGroups = c("SOLUS C/N"), options = layersControlOptions(collapsed = FALSE))
+```
