@@ -1,0 +1,100 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+
+```{r}
+# Load necessary libraries
+library(sf)
+library(dplyr)
+
+# Function to find and load all shapefiles in a folder
+load_shapefiles <- function(folder_path) {
+  # List all shapefiles in the folder
+  shapefiles <- list.files(folder_path, pattern = "\\.shp$", full.names = TRUE)
+  
+  # Load all shapefiles into a list
+  shapefile_list <- lapply(shapefiles, st_read)
+  
+  return(shapefile_list)
+}
+
+# Function to standardize columns across shapefiles
+standardize_columns <- function(shapefile_list) {
+  # Find the union of all column names
+  all_columns <- unique(unlist(lapply(shapefile_list, names)))
+  
+  # Ensure each shapefile has all columns, filling missing columns with NA
+  shapefile_list <- lapply(shapefile_list, function(shp) {
+    missing_columns <- setdiff(all_columns, names(shp))
+    for (col in missing_columns) {
+      shp[[col]] <- NA
+    }
+    shp <- shp[, all_columns]
+    return(shp)
+  })
+  
+  return(shapefile_list)
+}
+
+# Function to merge all shapefiles into a single spatial object
+merge_shapefiles <- function(shapefile_list) {
+  # Standardize columns
+  shapefile_list <- standardize_columns(shapefile_list)
+  
+  # Combine all shapefiles into one sf object using bind_rows
+  merged_shapefile <- do.call(rbind, shapefile_list)
+  
+  return(merged_shapefile)
+}
+
+# Example usage
+folder_path <- "C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/Watershed_vector-delineations/"  # Replace with your folder path
+shapefile_list <- load_shapefiles(folder_path)
+PS_watersheds <- merge_shapefiles(shapefile_list)
+
+# Save the merged shapefile to a new file
+st_write(PS_watersheds, "PS_watersheds.shp", append=FALSE)
+
+```
+
+```{r}
+library(mapview)
+mapview(PS_watersheds, map.types = "Esri.WorldImagery", col.regions = "blue", alpha.regions = 0.5)
+```
+
+```{r}
+
+# Check if the shapefiles are loaded correctly
+if (length(shapefile_list) == 0) {
+  stop("No shapefiles found in the specified folder.")
+}
+
+# Reproject and plot each shapefile individually using mapview
+for (i in 1:length(shapefile_list)) {
+  shapefile <- shapefile_list[[i]]
+  
+  # Check the CRS of the shapefile before transforming
+  print(st_crs(shapefile))
+  
+  # Reproject the shapefile to WGS84
+  shapefile <- st_transform(shapefile, crs = 4326)
+  
+  # Check the CRS of the shapefile after transforming
+  print(st_crs(shapefile))
+  
+  # Plot the shapefile with map imagery background using mapview
+  print(paste("Plotting Shapefile", i))
+  mapview(shapefile, map.types = "Esri.WorldImagery", col.regions = "blue", alpha.regions = 0.5)
+}
+
+
+mapview(shapefile_list[[1]], map.types = "Esri.WorldImagery", col.regions = "blue", alpha.regions = 0.5)
+mapview(shapefile_list[[2]], map.types = "Esri.WorldImagery", col.regions = "blue", alpha.regions = 0.5)
+
+
+
+```
+

@@ -8,15 +8,14 @@ output: html_notebook
 library(reticulate)
 library(terra)
 library(dplyr)
-use_python("c:/python310", required = TRUE)
+use_python("C:/Python310", required = TRUE)
 ```
 
 ```{r}
 rosetta_pkg <- import('rosetta')
 
-rosetta_functions <- rosetta_pkg$rosetta
-rosetta <- rosetta_functions$rosetta
-SoilData <- rosetta_functions$SoilData
+rosetta <- rosetta_pkg$rosetta
+SoilData <- rosetta_pkg$SoilData
 ```
 
 
@@ -102,15 +101,15 @@ process_data_with_rosetta <- function(df, vars, v=3, conf=NULL, include_sd=FALSE
     codes <- py_to_r(results[[3]])
     
     # Convert the mean to a DataFrame and set column names
-    vg_params <- as.data.frame(matrix(mean, ncol = 5, byrow = TRUE))
-    colnames(vg_params) <- c("theta_r", "theta_s", "alpha", "npar", "ksat")
+    vg_params_temp <- as.data.frame(matrix(mean, ncol = 5, byrow = TRUE))
+    colnames(vg_params_temp) <- c("theta_r", "theta_s", "alpha", "npar", "ksat")
     
     # Add model codes and version to the DataFrame
-    vg_params[".rosetta.model"] <- factor(codes, levels = -1:5)
-    vg_params[".rosetta.version"] <- v
+    vg_params_temp[".rosetta.model"] <- codes
+    vg_params_temp[".rosetta.version"] <- v
   
     # Append results to the list
-    results_list[[i]] <- vg_params
+    results_list[[i]] <- vg_params_temp
     
     # Move to the next chunk
     start_index <- start_index + chunk_size
@@ -122,6 +121,7 @@ process_data_with_rosetta <- function(df, vars, v=3, conf=NULL, include_sd=FALSE
   all_results[,] <- NA  # Set all values to NA initially
 
   # Map valid results back to their original positions
+  vg_params[,6] <- as.numeric(as.character(vg_params[,6]))
   all_results[valid_indices,] <- vg_params
 
   # Include standard deviations if requested
@@ -147,17 +147,17 @@ process_data_with_rosetta <- function(df, vars, v=3, conf=NULL, include_sd=FALSE
 
 ```{r}
 # Load raster layers
-db_raster <- rast("C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/db_0_Snohomish.tif")
-sand_raster <- terra::crop(rast("C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/sand_0_Snohomish.tif"), terra::ext(db_raster))
-silt_raster <- terra::crop(rast("C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/silt_0_Snohomish.tif"), terra::ext(db_raster))
-clay_raster <- terra::crop(rast("C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/clay_0_Snohomish.tif"), terra::ext(db_raster))
+db_raster <- rast("C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/Snohomish/db_0_Snohomish.tif")
+sand_raster <- terra::crop(rast("C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/Snohomish/sand_0_Snohomish.tif"), terra::ext(db_raster))
+silt_raster <- terra::crop(rast("C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/Snohomish/silt_0_Snohomish.tif"), terra::ext(db_raster))
+clay_raster <- terra::crop(rast("C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/Snohomish/clay_0_Snohomish.tif"), terra::ext(db_raster))
 
 
 ```
 
 ```{r}
 # Stack the rasters
-soil_stack <- c(sand_raster, silt_raster, clay_raster)
+soil_stack_raw <- c(sand_raster, silt_raster, clay_raster)
 
 # Function to normalize the components so that they sum to 100
 normalize_func <- function(x) {
@@ -168,7 +168,7 @@ normalize_func <- function(x) {
 }
 
 # Apply the normalization function
-normalized_soil_stack <- app(soil_stack, normalize_func)
+normalized_soil_stack <- app(soil_stack_raw, normalize_func)
 soil_stack <- c(normalized_soil_stack, db_raster/100)
 # Convert raster stack to a matrix where each row is a pixel and columns are properties
 df <- data.frame(values(soil_stack))
@@ -188,6 +188,7 @@ result_raster <- rast(nrows=nrow(soil_stack),
                      crs=crs(soil_stack),
                      vals=NA) 
 values(result_raster) <- matrix(results, ncol = ncol(results), byrow = TRUE)
+
 ```
 
 
@@ -202,6 +203,13 @@ data_df <- data.frame(
 
 # Pass to Python function
 results <- process_data_with_rosetta(data_df, vars=c("sand", "silt", "clay", "bulk_density"), v=3)
+
+
+test <- data.frame(t(values(soil_stack)[29761,]))
+
+names(test) <- c("sand", "silt", "clay", "bulk_density")
+
+results <- process_data_with_rosetta(test, vars=c("sand", "silt", "clay", "bulk_density"), v=3)
 ```
 
 

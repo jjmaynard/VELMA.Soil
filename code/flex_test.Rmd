@@ -1,0 +1,58 @@
+---
+title: "Soil C:N Ratio Dashboard"
+output: flexdashboard::flex_dashboard
+runtime: shiny
+---
+
+```{r}
+library(flexdashboard)
+library(leaflet)
+library(ggplot2)
+library(dplyr)
+
+# Sample data frame with location and C:N ratio
+df <- data.frame(
+  Latitude = c(37.7749, 34.0522, 40.7128, 41.8781, 29.7604),
+  Longitude = c(-122.4194, -118.2437, -74.0060, -87.6298, -95.3698),
+  C_N_Ratio = c(10, 15, 20, 12, 18)
+)
+```
+
+
+-------------------------------------
+## Map with Point Locations
+-------------------------------------
+Column {data-width=650}
+
+
+
+```{r}
+
+leaflet(df) %>%
+  addTiles() %>%
+  addCircleMarkers(~Longitude, ~Latitude, 
+                   radius = ~C_N_Ratio / 2, 
+                   popup = ~paste("C:N Ratio:", C_N_Ratio),
+                   color = "red", fill = TRUE, fillOpacity = 0.7)
+```
+
+
+-------------------------------------
+## Histogram of C:N Ratio
+-------------------------------------
+
+Column {data-width=350}
+
+
+
+```{r}
+ggplot(df, aes(x = C_N_Ratio)) +
+  geom_histogram(binwidth = 5, fill = "blue", color = "black", alpha = 0.7) +
+  labs(title = "Histogram of Soil Carbon to Nitrogen Ratio",
+       x = "C:N Ratio",
+       y = "Frequency") +
+  theme_minimal()
+```
+
+
+```{r}

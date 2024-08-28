@@ -11,38 +11,111 @@ output:
 library(flexdashboard)
 library(raster)
 library(leaflet)
+library(plotly)
+library(sf)
+library(DBI)
+library(RSQLite)
 ```
 
 ```{r}
-agg_factor = 3  # Aggregates in blocks of 2x2
-velma_classes <- raster("C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/velma_soil_classes.tif")
-slope <- raster("C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/slope_gr.tif")
-slope_agg = raster::aggregate(slope, fact=agg_factor, fun=base::mean)
-twi <- raster("C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/twi_gr.tif")
-twi_agg = raster::aggregate(twi, fact=agg_factor, fun=base::mean)
-clay_0 <- raster("C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/Snohomish/clay_0_Snohomish_UTM.tif")
-db_0 <- raster("C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/Snohomish/db_0_Snohomish_UTM.tif")
+terrain_agg_factor = 6  
+soil_agg_factor = 3  
+# Terrain Attributes
+twi <- raster::raster('C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/Puget_Sound/DEM/PS_twi_30m.tif')
+twi_agg = raster::aggregate(twi, fact=terrain_agg_factor, fun=base::mean)
+slope <- raster::raster('C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/Puget_Sound/DEM/PS_slope_30m.tif')
+slope_agg = raster::aggregate(slope, fact=terrain_agg_factor, fun=base::mean)
 
-tn1 <- raster("C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/Snohomish/tn_rast1_Snohomish.tif")
-tn1 <- tn1/1000
+# Soil Properties
+lithic <- raster::raster('C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/Puget_Sound/anylithicdpt_Puget_Sound_proj.tif') 
+lithic_agg = raster::aggregate(lithic, fact=soil_agg_factor, fun=base::mean)
 
-tc1 <- raster("C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/Snohomish/soc_rast1_Snohomish.tif")
-tc1 <- tc1/100
+clay_0 <- raster::raster('C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/Puget_Sound/claytotal_0_Puget_Sound_proj.tif')
+clay_agg = raster::aggregate(clay_0, fact=soil_agg_factor, fun=base::mean)
+                         
+db_0 <- raster::raster('C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/Puget_Sound/dbovendry_0_Puget_Sound_proj.tif')
+db_agg = raster::aggregate(db_0, fact=soil_agg_factor, fun=base::mean)
 
-sg100_cn <- tc1/tn1
+rfv_0 <- raster::raster('C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/Puget_Sound/fragvol_0_Puget_Sound_proj.tif')
+rfv_agg = raster::aggregate(rfv_0, fact=soil_agg_factor, fun=base::mean)
+
+soc_0 <- raster::raster('C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/Puget_Sound/soc_0_Puget_Sound_proj.tif')
+soc_agg = raster::aggregate(soc_0, fact=soil_agg_factor, fun=base::mean)
+soc_agg <- soc_agg/10000
+
+soc_0_sg100 <- raster::raster('C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/Puget_Sound/sg100_soc1_Puget_Sound_proj.tif')
+soc_sg100_agg = raster::aggregate(soc_0_sg100, fact=soil_agg_factor, fun=base::mean)
+soc_sg100_agg <- soc_sg100_agg/100
+
+tn_0_sg100 <- raster::raster('C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/Puget_Sound/sg100_tn1_Puget_Sound_proj.tif')
+tn_sg100_agg = raster::aggregate(tn_0_sg100, fact=soil_agg_factor, fun=base::mean)
+tn_sg100_agg <- tn_sg100_agg/1000
+
+sg100_cn <- soc_sg100_agg/tn_sg100_agg
 sg100_cn[sg100_cn>100] <- 100
 
-tc0_solus <- raster("C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/Snohomish/soc_0_Snohomish.tif")
-tc0_solus <- tc0_solus/10000
+# Calculate predicted SOLUS nitrogen
+solus_tn_pred <- soc_agg / sg100_cn
 
-solus_cn <- tc0_solus/tn1
-solus_cn[solus_cn>60] <- 60
+ps_terrain_clust <- raster::raster('C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/Puget_Sound/ps_terrain_clust.tif')
+ps_terrain_clust_agg = raster::aggregate(ps_terrain_clust, fact=terrain_agg_factor, fun=base::mean)
+
+ps_soil_terrain_clust <- raster::raster('C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/Puget_Sound/ps_soil_terrian_clust.tif')
+ps_soil_terrain_clust_agg = raster::aggregate(ps_soil_terrain_clust, fact=terrain_agg_factor, fun=base::mean)
+
+velma_classes <- raster("C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/velma_soil_classes.tif")
 
 
 
+# connect
+db <- dbConnect(RSQLite::SQLite(), 'C:/R_Drive/Data_Files/LPKS_Data/Data/Soil_Pedon_Databases/NRCS/KSSL/LabDataMart_4-17-23/ncss_labdata.sqlite')
+
+
+lab_layer <- dbGetQuery(db, "SELECT * from lab_layer;")
+lab_site <- dbGetQuery(db, "SELECT * from lab_site;")
+lab_pedon <- dbGetQuery(db, "SELECT * from lab_pedon;")
+lab_phy <- dbGetQuery(db, "SELECT * from lab_physical_properties;")
+lab_chem <- dbGetQuery(db, "SELECT * from lab_chemical_properties;")
+lab_nasis <- dbGetQuery(db, "SELECT * from lab_combine_nasis_ncss;")
+
+
+kssl_points <- lab_site %>% dplyr::filter(!is.na(latitude_std_decimal_degrees) | !is.na(longitude_std_decimal_degrees)) %>% dplyr::select(site_key, user_site_id, latitude_std_decimal_degrees,longitude_std_decimal_degrees) 
+
+
+kssl_points <- kssl_points %>% dplyr::inner_join(lab_pedon %>% dplyr::select(pedon_key, pedlabsampnum, user_pedon_id, site_key), by="site_key") 
+
+cn_data <- lab_chem %>% dplyr::filter(!is.na(total_nitrogen_ncs)) %>% dplyr::select(labsampnum, layer_key, total_carbon_ncs, total_nitrogen_ncs, organic_carbon_walkley_black, ph_h2o, caco3_lt_2_mm, nitrate_1m_kcl, nitrate_water_extractable) %>% dplyr::left_join(lab_layer %>% dplyr::select(layer_key, labsampnum, site_key, pedon_key, hzn_top, hzn_bot, hzn_desgn), by=c("labsampnum"="labsampnum", "layer_key"="layer_key"))
+
+kssl_points_lab <- kssl_points %>% dplyr::left_join(cn_data, by=c("site_key"="site_key", "pedon_key"="pedon_key"))
+
+kssl_points_lab <- kssl_points_lab %>% dplyr::filter(!is.na(latitude_std_decimal_degrees) | !is.na(longitude_std_decimal_degrees))
+                                          
+kssl_points_lab_sf <- st_as_sf(kssl_points_lab, coords = c("longitude_std_decimal_degrees", "latitude_std_decimal_degrees"), crs = 4326) 
+
+# Define a bounding box for a large area in the Pacific Northwest
+pnw <- st_as_sfc(st_bbox(c(xmin = -125, ymin = 42, xmax = -116, ymax = 49), crs = 4326))
+# Define the new projection (for example, EPSG:4326 for WGS84)
+new_crs <- "EPSG:4326"
+# Reproject the raster
+twi_reprojected <- terra::project(terra::rast(twi_agg), new_crs)
+ps <- st_as_sfc(st_bbox(twi_reprojected))
+
+
+# Subset the points by the bounding box
+kssl_points_lab_ps <- st_crop(kssl_points_lab_sf, ps)
+kssl_points_lab_ps <- kssl_points_lab_ps %>% dplyr::mutate(cn_ratio = total_carbon_ncs/total_nitrogen_ncs)
+kssl_points_lab_ps <- kssl_points_lab_ps %>% dplyr::filter(cn_ratio <60)
+kssl_points_lab_ps <- kssl_points_lab_ps %>% dplyr::filter(!is.na(cn_ratio))
+
+kssl_points_lab_pnw <- st_crop(kssl_points_lab_sf, pnw)
+kssl_points_lab_pnw <- kssl_points_lab_pnw %>% dplyr::mutate(cn_ratio = total_carbon_ncs/total_nitrogen_ncs)
+kssl_points_lab_pnw <- kssl_points_lab_pnw %>% dplyr::filter(cn_ratio <60)
+kssl_points_lab_pnw <- kssl_points_lab_pnw %>% dplyr::filter(!is.na(cn_ratio))
 ```
 
-VELMA Classes
+
+
+VELMA Classes1
 =====================================
 
 Row {data-height=650}
@@ -54,11 +127,11 @@ Row {data-height=650}
 # Your leaflet code for the first map
 leaflet() %>% 
   addTiles() %>% 
-  addRasterImage(velma_classes, colors=colorNumeric(palette = "viridis", domain = NULL), opacity = 1) %>%
-  addLayersControl(overlayGroups = c("Velma Classes"), options = layersControlOptions(collapsed = FALSE))
+  addRasterImage(ps_soil_terrain_clust_agg, colors=colorNumeric(palette = "viridis", domain = NULL), opacity = 1) %>%
+  addLayersControl(overlayGroups = c("Velma Classes1"), options = layersControlOptions(collapsed = FALSE))
 ```
 
-Slope %
+VELMA Classes2
 =====================================
 
 Row {data-height=650}
@@ -67,10 +140,39 @@ Row {data-height=650}
 ### Map 2
 
 ```{r}
+# Your leaflet code for the first map
 leaflet() %>% 
   addTiles() %>% 
-  addRasterImage(slope_agg, colors=colorNumeric(palette = "viridis", domain = NULL), opacity = 1) %>%
-  addLayersControl(overlayGroups = c("Slope %"), options = layersControlOptions(collapsed = FALSE))
+  addRasterImage(ps_terrain_clust_agg, colors=colorNumeric(palette = "viridis", domain = NULL), opacity = 1) %>%
+  addLayersControl(overlayGroups = c("Velma Classes2"), options = layersControlOptions(collapsed = FALSE))
+```
+
+Slope %
+=====================================
+
+Row {data-height=650}
+-------------------------------------
+
+### Map 3
+
+```{r}
+# Define the domain explicitly to cover the full range of raster values
+slope_value_range <- range(values(slope_agg), na.rm = TRUE)
+
+# Define a color palette, ensuring it covers the full range
+slope_pal <- colorNumeric(
+  palette = "viridis",   # or any other palette
+  domain = slope_value_range, 
+  na.color = "transparent"
+)
+
+# Create the Leaflet map
+leaflet() %>%
+  addTiles() %>%
+  addRasterImage(slope_agg, colors = slope_pal, opacity = 1) %>%
+  addLayersControl(overlayGroups = c("Slope %"), options = layersControlOptions(collapsed = FALSE)) %>%
+  addLegend(pal = slope_pal, values = values(slope_agg), title = "Slope %")
+
 ```
 
 
@@ -80,12 +182,24 @@ TWI
 Row {data-height=650}
 -------------------------------------
 
-### Map 3
+### Map 4
 ```{r}
-leaflet() %>% 
-  addTiles() %>% 
-  addRasterImage(twi_agg, colors=colorNumeric(palette = "viridis", domain = NULL), opacity = 1) %>%
-  addLayersControl(overlayGroups = c("Topographic Wetness Index"), options = layersControlOptions(collapsed = FALSE))
+# Define the domain explicitly to cover the full range of raster values
+twi_value_range <- range(values(twi_agg), na.rm = TRUE)
+
+# Define a color palette, ensuring it covers the full range
+twi_pal <- colorNumeric(
+  palette = "viridis",   # or any other palette
+  domain = twi_value_range, 
+  na.color = "transparent"
+)
+
+# Create the Leaflet map
+leaflet() %>%
+  addTiles() %>%
+  addRasterImage(twi_agg, colors = twi_pal, opacity = 1) %>%
+  addLayersControl(overlayGroups = c("Topographic Wetness Index"), options = layersControlOptions(collapsed = FALSE)) %>%
+  addLegend(pal = twi_pal, values = values(twi_agg), title = "Topographic Wetness Index")
 
 ```
 Clay %
@@ -94,12 +208,25 @@ Clay %
 Row {data-height=650}
 -------------------------------------
 
-### Map 4
+### Map 5
 ```{r}
-leaflet() %>% 
-  addTiles() %>% 
-  addRasterImage(clay_0, colors=colorNumeric(palette = "viridis", domain = NULL), opacity = 1) %>%
-  addLayersControl(overlayGroups = c("Clay %"), options = layersControlOptions(collapsed = FALSE))
+# Define the domain explicitly to cover the full range of raster values
+clay_value_range <- range(values(clay_agg), na.rm = TRUE)
+
+# Define a color palette, ensuring it covers the full range
+clay_pal <- colorNumeric(
+  palette = "viridis",   # or any other palette
+  domain = clay_value_range,    # Explicitly set the domain
+  na.color = "transparent"
+)
+
+# Create the Leaflet map
+leaflet() %>%
+  addTiles() %>%
+  addRasterImage(clay_agg, colors = clay_pal, opacity = 1) %>%
+  addLayersControl(overlayGroups = c("Clay %"), options = layersControlOptions(collapsed = FALSE)) %>%
+  addLegend(pal = clay_pal, values = values(clay_agg), title = "Clay %")
+
 ```
 Bulk Density
 =====================================
@@ -107,12 +234,26 @@ Bulk Density
 Row {data-height=650}
 -------------------------------------
 
-### Map 5
+### Map 6
 ```{r}
-leaflet() %>% 
-  addTiles() %>% 
-  addRasterImage(db_0, colors=colorNumeric(palette = "viridis", domain = NULL), opacity = 1) %>%
-  addLayersControl(overlayGroups = c("Bulk Density"), options = layersControlOptions(collapsed = FALSE))
+# Define the domain explicitly to cover the full range of raster values
+db_value_range <- range(values(db_agg), na.rm = TRUE)
+
+# Define a color palette, ensuring it covers the full range
+db_pal <- colorNumeric(
+  palette = "viridis",   # or any other palette
+  domain = db_value_range,    # Explicitly set the domain
+  na.color = "transparent"
+)
+
+# Create the Leaflet map
+leaflet() %>%
+  addTiles() %>%
+  addRasterImage(db_agg, colors = db_pal, opacity = 1) %>%
+  addLayersControl(overlayGroups = c("Bulk Density"), options = layersControlOptions(collapsed = FALSE)) %>%
+  addLegend(pal = db_pal, values = values(db_agg), title = "Bulk Density")
+
+
 ```
 
 SOC SOLUS
@@ -120,25 +261,76 @@ SOC SOLUS
 
 Row {data-height=650}
 -------------------------------------
-### Map 6
+### Map 7
 ```{r}
-leaflet() %>% 
-  addTiles() %>% 
-  addRasterImage(tc0_solus, colors=colorNumeric(palette = "viridis", domain = NULL), opacity = 1) %>%
-  addLayersControl(overlayGroups = c("SOLUS SOC"), options = layersControlOptions(collapsed = FALSE))
+# Define the domain explicitly to cover the full range of raster values
+soc_value_range <- range(values(soc_agg), na.rm = TRUE)
+
+# Define a color palette, ensuring it covers the full range
+soc_pal <- colorNumeric(
+  palette = "viridis",   # or any other palette
+  domain = soc_value_range,    # Explicitly set the domain
+  na.color = "transparent"
+)
+
+# Create the Leaflet map
+leaflet() %>%
+  addTiles() %>%
+  addRasterImage(soc_agg, colors = soc_pal, opacity = 1) %>%
+  addLayersControl(overlayGroups = c("SOLUS SOC"), options = layersControlOptions(collapsed = FALSE)) %>%
+  addLegend(pal = soc_pal, values = values(soc_agg), title = "SOLUS SOC")
+
 ```
+Lithic %
+=====================================
+
+Row {data-height=650}
+-------------------------------------
+
+### Map 7
+```{r}
+# Define the domain explicitly to cover the full range of raster values
+lithic_value_range <- range(values(lithic_agg), na.rm = TRUE)
+
+# Define a color palette, ensuring it covers the full range
+lithic_pal <- colorNumeric(
+  palette = "viridis",   # or any other palette
+  domain = c(0, 201),    # Explicitly set the domain
+  na.color = "transparent"
+)
+
+# Create the Leaflet map
+leaflet() %>%
+  addTiles() %>%
+  addRasterImage(lithic_agg, colors = lithic_pal, opacity = 1) %>%
+  addLayersControl(overlayGroups = c("Lithic Contact (cm)"), options = layersControlOptions(collapsed = FALSE)) %>%
+  addLegend(pal = lithic_pal, values = values(lithic_agg), title = "Lithic Contact (cm)")
+```
+
 
 SOC SG100
 =====================================
 
 Row {data-height=650}
 -------------------------------------
-### Map 7
+### Map 8
 ```{r}
-leaflet() %>% 
-  addTiles() %>% 
-  addRasterImage(tc1, colors=colorNumeric(palette = "viridis", domain = NULL), opacity = 1) %>%
-  addLayersControl(overlayGroups = c("SG100 SOC"), options = layersControlOptions(collapsed = FALSE))
+# Define the domain explicitly to cover the full range of raster values
+soc_sg100_value_range <- range(values(soc_sg100_agg), na.rm = TRUE)
+
+# Define a color palette, ensuring it covers the full range
+soc_sg100_pal <- colorNumeric(
+  palette = "viridis",   # or any other palette
+  domain = soc_sg100_value_range,    # Explicitly set the domain
+  na.color = "transparent"
+)
+
+# Create the Leaflet map
+leaflet() %>%
+  addTiles() %>%
+  addRasterImage(soc_sg100_agg, colors = soc_sg100_pal, opacity = 1) %>%
+  addLayersControl(overlayGroups = c("SG100 SOC"), options = layersControlOptions(collapsed = FALSE)) %>%
+  addLegend(pal = soc_pal, values = values(soc_agg), title = "SG100 SOC")
 ```
 
 TN SG100
@@ -147,12 +339,24 @@ TN SG100
 Row {data-height=650}
 -------------------------------------
 
-### Map 8
+### Map 9
 ```{r}
-leaflet() %>% 
-  addTiles() %>% 
-  addRasterImage(tn1, colors=colorNumeric(palette = "viridis", domain = NULL), opacity = 1) %>%
-  addLayersControl(overlayGroups = c("SG100 TN"), options = layersControlOptions(collapsed = FALSE))
+# Define the domain explicitly to cover the full range of raster values
+tn_sg100_value_range <- range(values(tn_sg100_agg), na.rm = TRUE)
+
+# Define a color palette, ensuring it covers the full range
+tn_sg100_pal <- colorNumeric(
+  palette = "viridis",   # or any other palette
+  domain = tn_sg100_value_range,    # Explicitly set the domain
+  na.color = "transparent"
+)
+
+# Create the Leaflet map
+leaflet() %>%
+  addTiles() %>%
+  addRasterImage(tn_sg100_agg, colors = tn_sg100_pal, opacity = 1) %>%
+  addLayersControl(overlayGroups = c("SG100 TN"), options = layersControlOptions(collapsed = FALSE)) %>%
+  addLegend(pal = tn_sg100_pal, values = values(tn_sg100_agg), title = "SG100 TN")
 ```
 
 C/N SG100
@@ -161,12 +365,25 @@ C/N SG100
 Row {data-height=650}
 -------------------------------------
 
-### Map 9
+### Map 10
 ```{r}
-leaflet() %>% 
-  addTiles() %>% 
-  addRasterImage(sg100_cn, colors=colorNumeric(palette = "viridis", domain = NULL), opacity = 1) %>%
-  addLayersControl(overlayGroups = c("SG100 C/N"), options = layersControlOptions(collapsed = FALSE))
+# Define the domain explicitly to cover the full range of raster values
+sg100_cn_value_range <- range(values(sg100_cn), na.rm = TRUE)
+
+# Define a color palette, ensuring it covers the full range
+sg100_cn_pal <- colorNumeric(
+  palette = "viridis",   # or any other palette
+  domain = sg100_cn_value_range,    # Explicitly set the domain
+  na.color = "transparent"
+)
+
+# Create the Leaflet map
+leaflet() %>%
+  addTiles() %>%
+  addRasterImage(sg100_cn, colors = sg100_cn_pal, opacity = 1) %>%
+  addLayersControl(overlayGroups = c("SG100 CN"), options = layersControlOptions(collapsed = FALSE)) %>%
+  addLegend(pal = sg100_cn_pal, values = values(sg100_cn), title = "SG100 CN")
+
 ```
 
 C/N SOLUS-SG100
@@ -174,10 +391,57 @@ C/N SOLUS-SG100
 
 Row {data-height=650}
 -------------------------------------
-### Map 10
+### Map 11
 ```{r}
-leaflet() %>% 
-  addTiles() %>% 
-  addRasterImage(solus_cn, colors=colorNumeric(palette = "viridis", domain = NULL), opacity = 1) %>%
-  addLayersControl(overlayGroups = c("SOLUS C/N"), options = layersControlOptions(collapsed = FALSE))
+# Define the domain explicitly to cover the full range of raster values
+solus_tn_pred_value_range <- range(values(solus_tn_pred), na.rm = TRUE)
+
+# Define a color palette, ensuring it covers the full range
+solus_tn_pred_pal <- colorNumeric(
+  palette = "viridis",   # or any other palette
+  domain = solus_tn_pred_value_range,    # Explicitly set the domain
+  na.color = "transparent"
+)
+
+# Create the Leaflet map
+leaflet() %>%
+  addTiles() %>%
+  addRasterImage(solus_tn_pred, colors = solus_tn_pred_pal, opacity = 1) %>%
+  addLayersControl(overlayGroups = c("SG100 TN"), options = layersControlOptions(collapsed = FALSE)) %>%
+  addLegend(pal = solus_tn_pred_pal, values = values(solus_tn_pred), title = "SG100 TN")
+
 ```
+
+KSSL Points
+=====================================
+
+Row {data-height=650}
+-------------------------------------
+### Plot 12
+```{r}
+# Create the histogram using ggplot2 and convert to plotly for interactivity
+p1 <- ggplot(kssl_points_lab_ps, aes(x = cn_ratio)) +
+  geom_histogram(binwidth = 5, fill = "blue", color = "black", alpha = 0.7) +
+  labs(title = "Histogram of Soil Carbon to Nitrogen Ratio",
+       x = "C:N Ratio",
+       y = "Frequency") +
+  theme_minimal()
+
+ggplotly(p1)
+```
+
+```{r}
+# Create an interactive map using leaflet
+leaflet(kssl_points_lab_ps) %>%
+  addTiles() %>%
+  addCircleMarkers(radius = 5, 
+                   color = ~colorNumeric(palette = c("purple", "yellow"), domain = kssl_points_lab_ps$cn_ratio)(cn_ratio),
+                   popup = ~paste("C:N Ratio:", cn_ratio),
+                   opacity = 1, fillOpacity = 0.7) %>%
+  addLegend(pal = colorNumeric(palette = c("purple", "yellow"), domain = kssl_points_lab_ps$cn_ratio), 
+            values = kssl_points_lab_ps$cn_ratio, 
+            title = "C:N Ratio",
+            position = "bottomright")
+```
+
+

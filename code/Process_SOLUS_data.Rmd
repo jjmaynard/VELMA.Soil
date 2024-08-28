@@ -7,140 +7,203 @@ output: html_notebook
 ```{r}
 library(sf)
 library(terra)
-
 ```
 
 ```{r}
-
-clay_0 <- rast('https://storage.googleapis.com/solus100notpub/claytotal_0_cm_p.tif')
-# Transform CRS of shapefile to match COG if necessary
-if (st_crs(Snohomish) != 9001) {
-  Snohomish <- st_transform(Snohomish, 9001)
-}
-
 # Review SOLUS layers
 solus_layers <- read.csv("C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/Final_Layer_Table_20231215.csv")
 ```
 
-
 ```{r}
-# Function to load rasters from URLs
-load_rasters <- function(urls) {
-  sapply(urls, rast, simplify = FALSE)  # Using sapply to return a list of raster objects
+# Function to load a raster from a URL using the terra package
+load_raster <- function(url) {
+  tryCatch({
+    rast(url)
+  }, error = function(e) {
+    message("Error loading raster from URL: ", url, " - ", e$message)
+    return(NULL)
+  })
 }
 
-# Function to mask, trim, and write raster to disk
+# Function to mask, trim, and write raster to disk using the terra package
 process_raster <- function(raster, shapefile, output_path) {
-  masked_raster <- mask(raster, shapefile)
-  trimmed_raster <- trim(masked_raster)
-  writeRaster(trimmed_raster, filename = output_path, overwrite=TRUE)
+  tryCatch({
+    masked_raster <- mask(raster, shapefile)
+    trimmed_raster <- trim(masked_raster)
+    writeRaster(trimmed_raster, filename = output_path, overwrite = TRUE)
+    message("Successfully processed and saved raster to: ", output_path)
+  }, error = function(e) {
+    message("Error processing raster: ", e$message)
+  })
 }
 
-
-
-get_soil_data <- function(shapefile, output_path, subfolder){
-  #create output directory
-  output_directory <- paste0(output_path, "/", subfolder)
+get_soil_data <- function(shapefile, output_path, subfolder) {
+  # Create output directory
+  output_directory <- file.path(output_path, subfolder)
+  
   # Check if the directory exists
   if (!dir.exists(output_directory)) {
-    # Create the directory since it does not exist
     dir.create(output_directory, recursive = TRUE)
     message("Directory created: ", output_directory)
   } else {
     message("Directory already exists: ", output_directory)
   }
-  # Transform CRS of shapefile to match COG if necessary
-  if (st_crs(shapefile) != 9001) {
-    shapefile <- st_transform(shapefile, 9001)
-  }
   
   depths <- c(0, 15, 30, 60, 100, 150)
   base_url <- "/vsicurl/https://storage.googleapis.com/solus100notpub"
-  properties <- c("claytotal", "sandtotal", "silttotal", "soc", "ph1to1h2o", "dbovendry", "fragvol")
-  names_list <- c("clay", "sand", "silt", "soc", "pH", "db", "rfv")  # Names for list indexing
+  properties <- c("ph1to1h2o", "dbovendry", "fragvol")
   
-  # Create a list of URLs for each property at each depth
-  urls_list <- lapply(properties, function(prop) {
-    setNames(lapply(depths, function(depth) {
+  # Create a flat list of URLs for each property at each depth
+  urls_list <- unlist(lapply(properties, function(prop) {
+    lapply(depths, function(depth) {
       sprintf("%s/%s_%s_cm_p.tif", base_url, prop, depth)
-    }), depths)
-  })
+    })
+  }))
   
-  # Load rasters for each property and depth
-  rasters_list <- setNames(lapply(urls_list, load_rasters), names_list)
-
-  # Process each raster file
-  for (prop in names(rasters_list)) {
-    for (depth in names(rasters_list[[prop]])) {
-      raster <- rasters_list[[prop]][[depth]]
-      output_path <- file.path(output_directory, sprintf(paste0("%s_%s_", basename(output_directory), ".tif"), prop, depth))
-      process_raster(raster, shapefile, output_path)
+  # Process each raster file sequentially
+  for (i in 1:length(urls_list)) {
+    url <- urls_list[i]
+    raster <- load_raster(url)
+    
+    # Check if raster is loaded correctly
+    if (is.null(raster)) {
+      message("Skipping raster for URL: ", url, " due to load failure.")
+      next
     }
+    
+    # Compare CRS of shapefile and raster
+    if (!identical(st_crs(shapefile)$wkt, crs(raster))) {
+      shapefile <- st_transform(shapefile, crs(raster))
+      message("Transformed shapefile CRS to match raster.")
+    }
+    
+    # Extract property and depth from URL for naming the output file
+    url_parts <- strsplit(basename(url), "_")[[1]]
+    prop <- url_parts[1]
+    depth <- gsub("cm_p.tif", "", url_parts[2])
+    
+    output_file_path <- file.path(output_directory, sprintf("%s_%s_%s.tif", prop, depth, basename(output_directory)))
+    
+    # Check if the output file already exists
+    if (file.exists(output_file_path)) {
+      message("Output file already exists: ", output_file_path, " - Skipping processing.")
+      next
+    }
+    
+    process_raster(raster, shapefile, output_file_path)
   }
-
-  # Additionally for bedrock, if needed
-  bedrock_url <- sprintf("%s/anylithicdpt_cm_p.tif", base_url)
-  bedrock <- rast(bedrock_url)
-  bedrock_output_path <- file.path(output_directory, paste0("bedrock_", basename(output_directory), ".tif"))
-  process_raster(bedrock, shapefile, bedrock_output_path)
   
-  # Additionally for bedrock, if needed
-  resdept_url <- sprintf("%s/resdept_all_cm_p.tif", base_url)
-  resdept <- rast(resdept_url)
-  bedrock_output_path <- file.path(output_directory, paste0("resdept_", basename(output_directory), ".tif"))
-  process_raster(resdept, shapefile, resdept_output_path)
+  # Process additional specific rasters
+  additional_urls <- c(
+    sprintf("%s/anylithicdpt_cm_p.tif", base_url),
+    sprintf("%s/resdept_cm_p.tif", base_url)
+  )
+  
+  for (url in additional_urls) {
+    raster <- load_raster(url)
+    
+    if (is.null(raster)) {
+      message("Skipping raster for URL: ", url, " due to load failure.")
+      next
+    }
+    
+    name <- strsplit(basename(url), "_cm_p.tif")[[1]]
+    output_file_path <- file.path(output_directory, paste0(name, "_", basename(output_directory), ".tif"))
+    
+    # Check if the output file already exists
+    if (file.exists(output_file_path)) {
+      message("Output file already exists: ", output_file_path, " - Skipping processing.")
+      next
+    }
+    
+    process_raster(raster, shapefile, output_file_path)
+  }
   
   # SoilGrids100 (Ramcharan et al., 2017)
-  tn1 <- '/vsicurl/https://scholarsphere.psu.edu/resources/9f534068-9c9a-44d8-b247-8bfc36e61896/downloads/5787'
-  tn2 <- '/vsicurl/https://scholarsphere.psu.edu/resources/fa72f9a6-8fd2-4a60-be19-f82e999d7e43/downloads/10947'
-  tn3 <- '/vsicurl/https://scholarsphere.psu.edu/resources/5e0a68e1-bc95-4279-9e0c-c9507ac38419/downloads/8651'
-  tn4 <- '/vsicurl/https://scholarsphere.psu.edu/resources/00cce6b0-a6bb-487c-893b-0cad6777abfb/downloads/8282'
-  tn5 <- '/vsicurl/https://scholarsphere.psu.edu/resources/00cc3034-fa47-4026-bdd1-2b7bb6d983fc/downloads/9932'
-  tn6 <- '/vsicurl/https://scholarsphere.psu.edu/resources/c8e66024-830f-4d74-9967-0ce34d0edddb/downloads/11939'
-  tn7 <- '/vsicurl/https://scholarsphere.psu.edu/resources/899fda9d-619b-4d48-b566-c57b73a1dc11/downloads/10798'
+  soilgrids_urls <- list(
+    '/vsicurl/https://scholarsphere.psu.edu/resources/9f534068-9c9a-44d8-b247-8bfc36e61896/downloads/5787',
+    '/vsicurl/https://scholarsphere.psu.edu/resources/fa72f9a6-8fd2-4a60-be19-f82e999d7e43/downloads/10947',
+    '/vsicurl/https://scholarsphere.psu.edu/resources/5e0a68e1-bc95-4279-9e0c-c9507ac38419/downloads/8651',
+    '/vsicurl/https://scholarsphere.psu.edu/resources/00cce6b0-a6bb-487c-893b-0cad6777abfb/downloads/8282',
+    '/vsicurl/https://scholarsphere.psu.edu/resources/00cc3034-fa47-4026-bdd1-2b7bb6d983fc/downloads/9932',
+    '/vsicurl/https://scholarsphere.psu.edu/resources/c8e66024-830f-4d74-9967-0ce34d0edddb/downloads/11939',
+    '/vsicurl/https://scholarsphere.psu.edu/resources/899fda9d-619b-4d48-b566-c57b73a1dc11/downloads/10798',
+    '/vsicurl/https://scholarsphere.psu.edu/resources/b0eb7c70-76aa-413b-8df9-6b655e63a6fa/downloads/11002',
+    '/vsicurl/https://scholarsphere.psu.edu/resources/1fb742a7-ee26-4136-b72e-80998c351c45/downloads/9254',
+    '/vsicurl/https://scholarsphere.psu.edu/resources/3493f35c-2b54-4ed4-8320-add9ad535859/downloads/8103',
+    '/vsicurl/https://scholarsphere.psu.edu/resources/e33883e3-261d-4547-b934-12c0abf165f2/downloads/6147',
+    '/vsicurl/https://scholarsphere.psu.edu/resources/cb70df68-52ab-4bbe-a627-e5fc560c63ce/downloads/8745',
+    '/vsicurl/https://scholarsphere.psu.edu/resources/16cb275e-b350-4ee5-ad21-63ad12d35576/downloads/5951',
+    '/vsicurl/https://scholarsphere.psu.edu/resources/fdd76981-a2f7-497f-88db-e6d76b94b612/downloads/5751'
+  )
   
-  soc1 <- '/vsicurl/https://scholarsphere.psu.edu/resources/b0eb7c70-76aa-413b-8df9-6b655e63a6fa/downloads/11002'
-  soc2 <- '/vsicurl/https://scholarsphere.psu.edu/resources/1fb742a7-ee26-4136-b72e-80998c351c45/downloads/9254'
-  soc3 <- '/vsicurl/https://scholarsphere.psu.edu/resources/3493f35c-2b54-4ed4-8320-add9ad535859/downloads/8103'
-  soc4 <- '/vsicurl/https://scholarsphere.psu.edu/resources/e33883e3-261d-4547-b934-12c0abf165f2/downloads/6147'
-  soc5 <- '/vsicurl/https://scholarsphere.psu.edu/resources/cb70df68-52ab-4bbe-a627-e5fc560c63ce/downloads/8745'
-  soc6 <- '/vsicurl/https://scholarsphere.psu.edu/resources/16cb275e-b350-4ee5-ad21-63ad12d35576/downloads/5951'
-  soc7 <- '/vsicurl/https://scholarsphere.psu.edu/resources/fdd76981-a2f7-497f-88db-e6d76b94b612/downloads/5751'
-  sg100_urls_list <- list(tn1, tn2, tn3, tn4, tn5, tn6, tn7, soc1, soc2, soc3, soc4, soc5, soc6, soc7)
-  sg_names_list <- c("tn_sg100", "soc_sg100")
-  rasters_list_sg <- setNames(lapply(sg100_urls_list, load_rasters), sg_names_list)
-  # Process each raster file
-  for (prop in names(rasters_list_sg)) {
-    for (depth in names(rasters_list_sg[[prop]])) {
-      raster <- rrasters_list_sg[[prop]][[depth]]
-      output_path <- file.path(output_directory, sprintf(paste0("%s_%s_", basename(output_directory), ".tif"), prop, depth))
-      process_raster(raster, shapefile, output_path)
+  # Process each SoilGrids100 raster file
+  for (url in soilgrids_urls) {
+    raster <- load_raster(url)
+    
+    # Check if raster is loaded correctly
+    if (is.null(raster)) {
+      message("Skipping SoilGrids100 raster for URL: ", url, " due to load failure.")
+      next
     }
+    
+    # Compare CRS of raster and shapefile
+    if (!identical(crs(raster), st_crs(shapefile)$wkt)) {
+      raster <- project(raster, st_crs(shapefile)$wkt)
+    }
+    
+    index <- which(soilgrids_urls == url)
+    output_file_path <- file.path(output_directory, sprintf("sg100_%d_%s.tif", index, basename(output_directory)))
+    
+    # Check if the output file already exists
+    if (file.exists(output_file_path)) {
+      message("Output file already exists: ", output_file_path, " - Skipping processing.")
+      next
+    }
+    
+    process_raster(raster, shapefile, output_file_path)
   }
 }
 
+```
 
+
+
+# Snohomish
+```{r}
+# Snohomish Watershed
 output_path <- "C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data"
 subfolder <- "Snohomish"
 # Load the shapefile
 Snohomish_path <- "C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/Watershed_vector-delineations/Snohomish_del.shp"
 
-Snohomish <- st_read(Snohomish_path)
+#Read the shapefile using sf package
+Snohomish <- sf::st_read(Snohomish_path)
 
+# Convert the sf object to an sp object
+Snohomish_sp <- as(Snohomish, "Spatial")
 
-
-# Additionally for bedrock, if needed
-bedrock_url <- sprintf("%s/anylithicdpt_cm_p.tif", base_url)
-bedrock <- rast(bedrock_url)
-bedrock_output_path <- file.path(output_directory, "bedrock_Snohomish.tif")
-process_raster(bedrock, Snohomish, bedrock_output_path)
-
-
-soc_0 <- rast(urls_list[[1]][[1]])
-bedrock_output_path <- file.path(output_directory, "bedrock_Snohomish.tif")
-process_raster(bedrock, Snohomish, bedrock_output_path)
-urls_list 
+# Check the CRS and transform if necessary
+if (crs(Snohomish_sp)@projargs != CRS("+init=epsg:9001")@projargs) {
+  Snohomish_sp <- spTransform(Snohomish_sp, CRS("+init=epsg:9001"))
+}
+# Run to download and process soil data for a watershed
+get_soil_data(Snohomish, output_path, subfolder)
 ```
+
+# Puget Sound
+```{r}
+# Puget Sound Watersheds
+output_path <- "C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data"
+subfolder <- "Puget_Sound"
+# Load the shapefile
+shape_path <- "C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/Watershed_vector-delineations/PS_watersheds.shp"
+Puget <- st_read(shape_path)
+
+# Run to download and process soil data for a watershed
+get_soil_data(Puget, output_path, subfolder)
+```
+
 # SoilGrids100 (Ramcharan et al., 2017)
 ```{r}
 tn1 <- 'https://scholarsphere.psu.edu/resources/9f534068-9c9a-44d8-b247-8bfc36e61896/downloads/5787'
