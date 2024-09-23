@@ -51,7 +51,7 @@ get_soil_data <- function(shapefile, output_path, subfolder) {
   
   depths <- c(0, 15, 30, 60, 100, 150)
   base_url <- "/vsicurl/https://storage.googleapis.com/solus100notpub"
-  properties <- c("ph1to1h2o", "dbovendry", "fragvol")
+  properties <- c("soc")
   
   # Create a flat list of URLs for each property at each depth
   urls_list <- unlist(lapply(properties, function(prop) {
@@ -136,7 +136,17 @@ get_soil_data <- function(shapefile, output_path, subfolder) {
     '/vsicurl/https://scholarsphere.psu.edu/resources/16cb275e-b350-4ee5-ad21-63ad12d35576/downloads/5951',
     '/vsicurl/https://scholarsphere.psu.edu/resources/fdd76981-a2f7-497f-88db-e6d76b94b612/downloads/5751'
   )
+  # Create the lookup table
+  names_list <- c(
+      "tn1", "tn2", "tn3", "tn4", "tn5", "tn6", "tn7",
+      "soc1", "soc2", "soc3", "soc4", "soc5", "soc6", "soc7"
+  )
   
+  lookup_table <- data.frame(
+      Number = 1:14,
+      Name = names_list,
+      stringsAsFactors = FALSE
+  )
   # Process each SoilGrids100 raster file
   for (url in soilgrids_urls) {
     raster <- load_raster(url)
@@ -153,7 +163,7 @@ get_soil_data <- function(shapefile, output_path, subfolder) {
     }
     
     index <- which(soilgrids_urls == url)
-    output_file_path <- file.path(output_directory, sprintf("sg100_%d_%s.tif", index, basename(output_directory)))
+    output_file_path <- file.path(output_directory, sprintf("sg100_%d_%s.tif", names_list[url], basename(output_directory)))
     
     # Check if the output file already exists
     if (file.exists(output_file_path)) {
@@ -168,29 +178,6 @@ get_soil_data <- function(shapefile, output_path, subfolder) {
 ```
 
 
-
-# Snohomish
-```{r}
-# Snohomish Watershed
-output_path <- "C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data"
-subfolder <- "Snohomish"
-# Load the shapefile
-Snohomish_path <- "C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/Watershed_vector-delineations/Snohomish_del.shp"
-
-#Read the shapefile using sf package
-Snohomish <- sf::st_read(Snohomish_path)
-
-# Convert the sf object to an sp object
-Snohomish_sp <- as(Snohomish, "Spatial")
-
-# Check the CRS and transform if necessary
-if (crs(Snohomish_sp)@projargs != CRS("+init=epsg:9001")@projargs) {
-  Snohomish_sp <- spTransform(Snohomish_sp, CRS("+init=epsg:9001"))
-}
-# Run to download and process soil data for a watershed
-get_soil_data(Snohomish, output_path, subfolder)
-```
-
 # Puget Sound
 ```{r}
 # Puget Sound Watersheds
@@ -203,94 +190,255 @@ Puget <- st_read(shape_path)
 # Run to download and process soil data for a watershed
 get_soil_data(Puget, output_path, subfolder)
 ```
-
-# SoilGrids100 (Ramcharan et al., 2017)
+# SOLUS Nitrogen
 ```{r}
-tn1 <- 'https://scholarsphere.psu.edu/resources/9f534068-9c9a-44d8-b247-8bfc36e61896/downloads/5787'
-tn2 <- 'https://scholarsphere.psu.edu/resources/fa72f9a6-8fd2-4a60-be19-f82e999d7e43/downloads/10947'
-tn3 <- 'https://scholarsphere.psu.edu/resources/5e0a68e1-bc95-4279-9e0c-c9507ac38419/downloads/8651'
-tn4 <- 'https://scholarsphere.psu.edu/resources/00cce6b0-a6bb-487c-893b-0cad6777abfb/downloads/8282'
-tn5 <- 'https://scholarsphere.psu.edu/resources/00cc3034-fa47-4026-bdd1-2b7bb6d983fc/downloads/9932'
-tn6 <- 'https://scholarsphere.psu.edu/resources/c8e66024-830f-4d74-9967-0ce34d0edddb/downloads/11939'
-tn7 <- 'https://scholarsphere.psu.edu/resources/899fda9d-619b-4d48-b566-c57b73a1dc11/downloads/10798'
+# Define file paths to SoilGrids layers
+soc1_sg100_path <- here("data/raw_data/Puget_Sound/sg100_soc1_Puget_Sound.tif")
+tn1_sg100_path <- here("data/raw_data/Puget_Sound/sg100_tn1_Puget_Sound.tif")
 
-soc1 <- 'https://scholarsphere.psu.edu/resources/b0eb7c70-76aa-413b-8df9-6b655e63a6fa/downloads/11002'
-soc2 <- 'https://scholarsphere.psu.edu/resources/1fb742a7-ee26-4136-b72e-80998c351c45/downloads/9254'
-soc3 <- 'https://scholarsphere.psu.edu/resources/3493f35c-2b54-4ed4-8320-add9ad535859/downloads/8103'
-soc4 <- 'https://scholarsphere.psu.edu/resources/e33883e3-261d-4547-b934-12c0abf165f2/downloads/6147'
-soc5 <- 'https://scholarsphere.psu.edu/resources/cb70df68-52ab-4bbe-a627-e5fc560c63ce/downloads/8745'
-soc6 <- 'https://scholarsphere.psu.edu/resources/16cb275e-b350-4ee5-ad21-63ad12d35576/downloads/5951'
-soc7 <- 'https://scholarsphere.psu.edu/resources/fdd76981-a2f7-497f-88db-e6d76b94b612/downloads/5751'
+# Load SoilGrids carbon and nitrogen rasters
+soc1_sg100 <- rast(soc1_sg100_path)
+soc1_sg100 <- soc1_sg100/100
+tn1_sg100 <- rast(tn1_sg100_path)
+tn1_sg100 <-tn1_sg100/1000
+# Define file path to SOLUS carbon layer
+soc_0_path <- here("data/raw_data/Puget_Sound/soc_0_Puget_Sound.tif")
 
-# tn
-tn_rast1 <- rast(tn1)
-tn_rast1_Snohomish <- mask(tn_rast1, Snohomish)
-tn_rast1_Snohomish <- trim(tn_rast1_Snohomish, filename="C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/tn_rast1_Snohomish.tif")
+# Load SOLUS carbon raster
+soc_0 <- rast(soc_0_path)
+soc_0 <- soc_0/10000
+# Align SOLUS carbon raster to SoilGrids raster
+solus_carbon_aligned <- resample(soc_0, soc1_sg100, method = "bilinear")
 
-tn_rast2 <- rast(tn2)
-tn_rast2_Snohomish <- mask(tn_rast2, Snohomish)
-tn_rast2_Snohomish <- trim(tn_rast2_Snohomish, filename="C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/tn_rast2_Snohomish.tif")
+# Calculate the C:N ratio
+cn_ratio_sg100 <- soc1_sg100 / tn1_sg100
 
-tn_rast3 <- rast(tn3)
-tn_rast3_Snohomish <- mask(tn_rast3, Snohomish)
-tn_rast3_Snohomish <- trim(tn_rast3_Snohomish, filename="C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/tn_rast3_Snohomish.tif")
+# Replace infinite and NaN values with NA
+cn_ratio_sg100[!is.finite(cn_ratio_sg100)] <- NA
+# Set all values greater than 100 to 100
+cn_ratio_sg100 <- clamp(cn_ratio_sg100, lower = -Inf, upper = 100)
 
-tn_rast4 <- rast(tn4)
-tn_rast4_Snohomish <- mask(tn_rast4, Snohomish)
-tn_rast4_Snohomish <- trim(tn_rast4_Snohomish, filename="C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/tn_rast4_Snohomish.tif")
+# Calculate predicted SOLUS nitrogen
+tn_0_pred <- soc_0 / cn_ratio_sg100
 
-tn_rast5 <- rast(tn5)
-tn_rast5_Snohomish <- mask(tn_rast5, Snohomish)
-tn_rast5_Snohomish <- trim(tn_rast5_Snohomish, filename="C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/tn_rast5_Snohomish.tif")
+```
 
-tn_rast6 <- rast(tn6)
-tn_rast6_Snohomish <- mask(tn_rast6, Snohomish)
-tn_rast6_Snohomish <- trim(tn_rast6_Snohomish, filename="C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/tn_rast6_Snohomish.tif")
+#Pedon Data
+```{r}
+library(DBI)
+library(RSQLite)
 
-tn_rast7 <- rast(tn7)
-tn_rast7_Snohomish <- mask(tn_rast7, Snohomish)
-tn_rast7_Snohomish <- trim(tn_rast7_Snohomish, filename="C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/tn_rast7_Snohomish.tif")
+# connect
+db <- dbConnect(RSQLite::SQLite(), 'C:/R_Drive/Data_Files/LPKS_Data/Data/Soil_Pedon_Databases/NRCS/KSSL/LabDataMart_4-17-23/ncss_labdata.sqlite')
 
-# soc
-soc_rast1 <- rast(soc1)
-soc_rast1_Snohomish <- mask(soc_rast1, Snohomish)
-soc_rast1_Snohomish <- trim(soc_rast1_Snohomish, filename="C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/soc_rast1_Snohomish.tif")
+dbListTables(db)
 
-soc_rast2 <- rast(soc2)
-soc_rast2_Snohomish <- mask(soc_rast2, Snohomish)
-soc_rast2_Snohomish <- trim(soc_rast2_Snohomish, filename="C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/soc_rast2_Snohomish.tif")
+lab_layer <- dbGetQuery(db, "SELECT * from lab_layer;")
+lab_site <- dbGetQuery(db, "SELECT * from lab_site;")
+lab_pedon <- dbGetQuery(db, "SELECT * from lab_pedon;")
+lab_phy <- dbGetQuery(db, "SELECT * from lab_physical_properties;")
+lab_chem <- dbGetQuery(db, "SELECT * from lab_chemical_properties;")
+lab_nasis <- dbGetQuery(db, "SELECT * from lab_combine_nasis_ncss;")
 
-soc_rast3 <- rast(soc3)
-soc_rast3_Snohomish <- mask(soc_rast3, Snohomish)
-soc_rast3_Snohomish <- trim(soc_rast3_Snohomish, filename="C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/soc_rast3_Snohomish.tif")
 
-soc_rast4 <- rast(soc4)
-soc_rast4_Snohomish <- mask(soc_rast4, Snohomish)
-soc_rast4_Snohomish <- trim(soc_rast4_Snohomish, filename="C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/soc_rast4_Snohomish.tif")
+kssl_points <- lab_site %>% dplyr::filter(!is.na(latitude_std_decimal_degrees) | !is.na(longitude_std_decimal_degrees)) %>% dplyr::select(site_key, user_site_id, latitude_std_decimal_degrees,longitude_std_decimal_degrees) 
 
-soc_rast5 <- rast(soc5)
-soc_rast5_Snohomish <- mask(soc_rast5, Snohomish)
-soc_rast5_Snohomish <- trim(soc_rast5_Snohomish, filename="C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/soc_rast5_Snohomish.tif")
 
-soc_rast6 <- rast(soc6)
-soc_rast6_Snohomish <- mask(soc_rast6, Snohomish)
-soc_rast6_Snohomish <- trim(soc_rast6_Snohomish, filename="C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/soc_rast6_Snohomish.tif")
+kssl_points <- kssl_points %>% dplyr::inner_join(lab_pedon %>% dplyr::select(pedon_key, pedlabsampnum, user_pedon_id, site_key), by="site_key") 
 
-soc_rast7 <- rast(soc7)
-soc_rast7_Snohomish <- mask(soc_rast7, Snohomish)
-soc_rast7_Snohomish <- trim(soc_rast7_Snohomish, filename="C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/soc_rast7_Snohomish.tif")
+cn_data <- lab_chem %>% dplyr::filter(!is.na(total_nitrogen_ncs)) %>% dplyr::select(labsampnum, layer_key, total_carbon_ncs, total_nitrogen_ncs, organic_carbon_walkley_black, ph_h2o, caco3_lt_2_mm, nitrate_1m_kcl, nitrate_water_extractable) %>% dplyr::left_join(lab_layer %>% dplyr::select(layer_key, labsampnum, site_key, pedon_key, hzn_top, hzn_bot, hzn_desgn), by=c("labsampnum"="labsampnum", "layer_key"="layer_key"))
+
+kssl_points_lab <- kssl_points %>% dplyr::left_join(cn_data, by=c("site_key"="site_key", "pedon_key"="pedon_key"))
+
+kssl_points_lab <- kssl_points_lab %>% dplyr::filter(!is.na(latitude_std_decimal_degrees) | !is.na(longitude_std_decimal_degrees))
+                                          
+kssl_points_lab_sf <- st_as_sf(kssl_points_lab, coords = c("longitude_std_decimal_degrees", "latitude_std_decimal_degrees"), crs = 4326) 
+
+# Define a bounding box for a large area in the Pacific Northwest
+ps <- st_as_sfc(st_bbox(c(xmin = -125, ymin = 42, xmax = -116, ymax = 49), crs = 4326))
+
+# Subset the points by the bounding box
+kssl_points_lab_ps <- st_crop(kssl_points_lab_sf, ps)
+kssl_points_lab_ps <- kssl_points_lab_ps %>% dplyr::mutate(cn_ratio = total_carbon_ncs/total_nitrogen_ncs)
+kssl_points_lab_ps <- kssl_points_lab_ps %>% dplyr::filter(cn_ratio <40)
+kssl_points_lab_ps <- kssl_points_lab_ps %>% dplyr::filter(!is.na(cn_ratio))
+
+
+# Create a histogram of the soil carbon to nitrogen ratio
+ggplot(kssl_points_lab_ps, aes(x =cn_ratio)) +
+  geom_histogram(binwidth = 5, fill = "blue", color = "black", alpha = 0.7) +
+  labs(title = "Histogram of Soil Carbon to Nitrogen Ratio",
+       x = "C:N Ratio",
+       y = "Frequency") +
+  theme_minimal()
+
+ggplot(kssl_points_lab_ps) +
+  geom_sf(aes(color = cn_ratio), size = 3) +
+    scale_color_gradient(low = "purple", high = "yellow") +
+  labs(title = "Point Plot with Color Gradient",
+       color = "Value") +
+  theme_minimal()
+```
+
+
+# Elevation Data
+
+```{r}
+library(elevatr)
+# Get elevation data for the AOI
+dem_data <- get_elev_raster(locations = Puget, src="gl1", clip = "locations")
+# Write the raster layer to a GeoTIFF file
+writeRaster(dem_data, filename = "C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/Puget_Sound/DEM/Puget_SRTM_30m_DEM.tif", format = "GTiff", overwrite = TRUE)
+
+```
+
+
+```{r}
+# Define the folder containing the .tif files
+input_folder <- here::here("data/raw_data/Puget_Sound")
+
+# Load the raster file with the desired CRS
+reference_raster <- rast(here::here("data/raw_data/Puget_Sound/DEM/Puget_SRTM_30m_DEM.tif"))
+
+# Extract the CRS from the reference raster
+new_crs <- crs(reference_raster)
+
+# List all .tif files in the folder
+tif_files <- list.files(input_folder, pattern = "\\.tif$", full.names = TRUE)
+
+# Loop over each file, reproject, and save with "_proj" added to the name
+for (file in tif_files) {
+  
+  # Load the raster file
+  raster_data <- rast(file)
+  
+  # Reproject the raster using the CRS from the reference raster
+  reprojected_raster <- project(raster_data, new_crs)
+  
+  # Create a new filename with "_proj" before the file extension
+  output_file <- sub("\\.tif$", "_proj.tif", file)
+  
+  # Write the reprojected raster to the new file
+  writeRaster(reprojected_raster, output_file, overwrite = TRUE)
+  
+  # Print a message indicating success
+  cat("Reprojected and saved:", output_file, "\n")
+}
+```
+
+
+```{r}
+library(rgrass7)
+
+# Ensure environment variables are set
+Sys.setenv(PATH = paste(Sys.getenv("PATH"), "C:/OSGeo4W64/bin", sep = ";"))
+Sys.setenv(GISBASE = "C:/OSGeo4W64/apps/grass/grass76")
+Sys.setenv(GRASS_SH = "C:/OSGeo4W64/apps/grass/grass76/etc/grass.bat")
+Sys.setenv(GRASS_PYTHON = "C:/OSGeo4W64/bin/python.exe")
+
+# Initialize GRASS GIS
+initGRASS(
+  gisBase = "C:/OSGeo4W64/apps/grass/grass76",
+  gisDbase = "C:/GRASS_DATA",
+  location = "VELMA",
+  mapset = "PERMANENT",
+  override = TRUE
+)
+
+# Path to your DEM file
+dem_path <- "C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/Puget_SRTM_30m_DEM.tif"
+
+# Import DEM into GRASS GIS
+execGRASS("r.in.gdal", 
+          parameters = list(input = dem_path, output = "SRTM30m"))
+
+# Run r.param.scale on the DEM
+execGRASS("r.param.scale", 
+          parameters = list(input = "SRTM30m", 
+                            output = "slope", 
+                            size = 3,  # Neighborhood size (adjust as needed)
+                            param = "slope",  # Choose the parameter, e.g., slope, aspect, etc.
+                            zscale = 1.0))  # Z-scale factor (adjust as needed)
+
+# Export the result to a GeoTIFF file
+output_path <- "path/to/output/slope.tif"
+execGRASS("r.out.gdal", flags = "c", parameters = list(input = "slope", output = output_path))
+unlink_.GRASS()  # This will clean up temporary files and exit the GRASS session
+
+# Calculate slope
+execGRASS("r.slope.aspect", elevation = "dem", slope = "slope")
+
+# Calculate aspect
+execGRASS("r.slope.aspect", elevation = "dem", aspect = "aspect")
+
+# Export slope to R
+slope <- readRAST("slope")
+
+# Export aspect to R
+aspect <- readRAST("aspect")
+
+# Now, slope and aspect are R raster objects and can be used for further analysis in R
+print(slope)
+print(aspect)
+
+```
+
+
+
+```{r}
+# Set the path to the OSGeo4W directory
+osgeo4w_path <- "C:/OSGeo4W64"
+
+# Add OSGeo4W binaries to the system PATH
+Sys.setenv(PATH = paste(Sys.getenv("PATH"), 
+                        file.path(osgeo4w_path, "bin"), 
+                        file.path(osgeo4w_path, "apps/grass/grass76/bin"), 
+                        file.path(osgeo4w_path, "apps/grass/grass76/lib"), 
+                        sep = ";"))
+
+# Set additional necessary environment variables
+Sys.setenv(GISBASE = file.path(osgeo4w_path, "apps/grass/grass76"))
+Sys.setenv(GRASS_SH = file.path(osgeo4w_path, "apps/grass/grass76/etc", "grass.bat"))
+Sys.setenv(GRASS_PYTHON = file.path(osgeo4w_path, "bin", "python.exe"))
+
+# Set the library path for GRASS (this might be necessary for some configurations)
+Sys.setenv(LD_LIBRARY_PATH = file.path(osgeo4w_path, "apps/grass/grass76/lib"))
 ```
 
 ```{r}
-# Crop the COG using the shapefile boundary
-clay_0_Snohomish <- mask(clay_0, Snohomish)
-clay_0_Snohomish <- trim(clay_0_Snohomish, filename="C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/clay_0_Snohomish.tif")
+library(rgrass)
 
-bedrock_Snohomish <- mask(bedrock, Snohomish)
-bedrock_Snohomish <- trim(bedrock_Snohomish, filename="C:/R_Drive/Data_Files/LPKS_Data/R_Projects/VELMA.Soil/data/raw_data/bedrock_Snohomish.tif")
+# Set the GRASS GIS database, location, and mapset
+gisBase <- "C:/OSGeo4W64/apps/grass/grass76"
+# Path to GRASS installation directory (modify according to your installation)
+gisDbase <- "C:/"  # GRASS database directory
+location <- "VELMA"  # Location name
+mapset <- "PERMANENT"  # Mapset name
+
+# Initialize the GRASS session
+initGRASS(gisBase = gisBase, gisDbase = gisDbase, location = location, mapset = mapset, override = TRUE)
+
+# Path to the DEM file
+dem_path <- "path/to/your/dem.tif"
+
+# Import DEM into GRASS GIS
+execGRASS("r.in.gdal", flags = "overwrite", parameters = list(input = dem_path, output = "dem"))
 
 ```
+
 ```{r}
+# Run r.param.scale on the DEM
+execGRASS("r.param.scale", 
+          parameters = list(input = "dem", 
+                            output = "slope", 
+                            size = 3,  # Neighborhood size (adjust as needed)
+                            param = "slope",  # Choose the parameter, e.g., slope, aspect, etc.
+                            zscale = 1.0))  # Z-scale factor (adjust as needed)
+
+# Export the result to a GeoTIFF file
+output_path <- "path/to/output/slope.tif"
+execGRASS("r.out.gdal", flags = "c", parameters = list(input = "slope", output = output_path))
+unlink_.GRASS()  # This will clean up temporary files and exit the GRASS session
 
 ```
 

@@ -1,5 +1,5 @@
 ---
-title: "Geospatial Analysis Dashboard"
+title: "VELMA-SOLUS Analysis Dashboard"
 output: 
   flexdashboard::flex_dashboard:
     orientation: columns
@@ -124,11 +124,28 @@ Row {data-height=650}
 ### Map 1
 
 ```{r}
-# Your leaflet code for the first map
-leaflet() %>% 
-  addTiles() %>% 
-  addRasterImage(ps_soil_terrain_clust_agg, colors=colorNumeric(palette = "viridis", domain = NULL), opacity = 1) %>%
-  addLayersControl(overlayGroups = c("Velma Classes1"), options = layersControlOptions(collapsed = FALSE))
+
+ps_soil_terrain_clust_agg_rounded <- round(ps_soil_terrain_clust_agg)
+
+# Step 2: Convert the raster values to a factor
+ps_soil_terrain_clust_agg_factor <- as.factor(ps_soil_terrain_clust_agg_rounded)
+
+# Check the levels of the factor raster
+soil_terrain_values <- levels(ps_soil_terrain_clust_agg_factor)[[1]]$ID
+
+# Define a color palette, ensuring it covers the full range
+soil_terrain_clust_pal <- colorFactor(
+  palette = "viridis",   # or any other palette
+  domain = soil_terrain_values, 
+  na.color = "transparent"
+)
+
+# Create the Leaflet map
+leaflet() %>%
+  addTiles() %>%
+  addRasterImage(ps_soil_terrain_clust_agg_factor, colors = soil_terrain_clust_pal, opacity = 1) %>%
+  addLayersControl(overlayGroups = c("Soil Terrain Clusters"), options = layersControlOptions(collapsed = FALSE)) %>%
+  addLegend(pal = soil_terrain_clust_pal, values = values(ps_soil_terrain_clust_agg_factor), title = "Cluster")
 ```
 
 VELMA Classes2
@@ -140,11 +157,28 @@ Row {data-height=650}
 ### Map 2
 
 ```{r}
-# Your leaflet code for the first map
-leaflet() %>% 
-  addTiles() %>% 
-  addRasterImage(ps_terrain_clust_agg, colors=colorNumeric(palette = "viridis", domain = NULL), opacity = 1) %>%
-  addLayersControl(overlayGroups = c("Velma Classes2"), options = layersControlOptions(collapsed = FALSE))
+ps_terrain_clust_agg_rounded <- round(ps_terrain_clust_agg)
+
+# Step 2: Convert the raster values to a factor
+ps_terrain_clust_agg_factor <- as.factor(ps_terrain_clust_agg_rounded)
+
+# Check the levels of the factor raster
+terrain_values <- levels(ps_terrain_clust_agg_factor)[[1]]$ID
+
+# Define a color palette, ensuring it covers the full range
+terrain_clust_pal <- colorFactor(
+  palette = "viridis",   # or any other palette
+  domain = terrain_values, 
+  na.color = "transparent"
+)
+
+# Create the Leaflet map
+leaflet() %>%
+  addTiles() %>%
+  addRasterImage(ps_terrain_clust_agg_factor, colors = terrain_clust_pal, opacity = 1) %>%
+  addLayersControl(overlayGroups = c("Terrain Clusters"), options = layersControlOptions(collapsed = FALSE)) %>%
+  addLegend(pal = terrain_clust_pal, values = values(ps_terrain_clust_agg_factor), title = "Cluster")
+
 ```
 
 Slope %
